@@ -1,10 +1,10 @@
 <template>
-
+<v-container id="bgimg">
 <v-card
     :loading="loading"
     class="mx-auto my-12"
     max-width="374"
-  >
+    >
   <v-form
     ref="form"
     v-model="valid"
@@ -36,7 +36,15 @@
     
   </v-form>
   </v-card>
+  </v-container>
 </template>
+
+<style>
+#bgimg {
+    background: url("https://st3.depositphotos.com/8343336/16085/i/1600/depositphotos_160850202-stock-photo-cargo-transportation-unloading-container-trucks.jpg") fill no-repeat center center;
+}
+</style>
+
 
 <script>
 
