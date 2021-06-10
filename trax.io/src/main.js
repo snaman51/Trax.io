@@ -8,6 +8,8 @@ import Customer from './components/customer.vue';
 import CustomerDashboard from './components/customerDashboard.vue';
 import CustDetails from './components/custDetails.vue'
 import CustList from './components/custList.vue'
+import Placeorder from './components/placeorder.vue';
+import Orderlist from './components/orderlist.vue';
 
 
 Vue.use(VueRouter)
@@ -22,7 +24,9 @@ const router = new VueRouter({
     {path: '/customer',name: 'customer', component: Customer},
     { path: '/customerDashboard', name: 'customerDashboard', component: CustomerDashboard },
     {path:'/custDetails',name:'CustDetails',component:CustDetails},
-  {path:'/custList',name:'CustList',component:CustList}
+    {path:'/custList',name:'CustList',component:CustList},
+    { path: '/placeorder', name: 'placeorder', component: Placeorder},
+    { path: '/orderlist', name: 'orderlist', component: Orderlist},
   ]
 })
 

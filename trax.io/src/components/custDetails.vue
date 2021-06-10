@@ -85,7 +85,7 @@
           :rules="[(v) => !!v || 'Address is required']"
           name="input-7-4"
           label="Permanent Address"
-          v-model="paddress"
+          v-model="address"
         ></v-textarea>
       </v-col></v-row>
       <v-row class="pb-3"><v-col
@@ -152,6 +152,7 @@ font-family: cursive;}
 export default {
   name: "CustDetails",
   data: () => ({
+      valid:true,
       fname:'',
       lname:'',
       email:'',
