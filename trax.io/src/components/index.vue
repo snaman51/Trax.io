@@ -1,5 +1,5 @@
   <template>
-  <v-app id="bg">
+  <v-app>
     <div >
       <v-container class="search" fill-height pa-16>
       <v-text-field
@@ -17,8 +17,6 @@
   </template>
 
   <style>
-  #bg{
-background-image: linear-gradient(to left top, #1fccd7, #58d9db, #7be6e1, #9af2e8, #b6fff0);  }
 
   .search {
     position:relative;
@@ -33,16 +31,9 @@ export default {
   name: "Index",
 
   data: () => ({
-      drawer:false,
-      group: null
+
     }),
 
-
-    watch: {
-      group () {
-        this.drawer = false
-      },
-    },
 
     
 };

@@ -1,5 +1,5 @@
 <template>
-  <v-app id="bgimg">
+  <v-app id="bg">
     <v-main>
     <v-toolbar dark dense src="https://wallpapercave.com/wp/wp7309638.jpg">
 
@@ -73,9 +73,8 @@
 
 
 <style>
-#bgimg {
-    background: url("https://st3.depositphotos.com/8343336/16085/i/1600/depositphotos_160850202-stock-photo-cargo-transportation-unloading-container-trucks.jpg") fill no-repeat center center;
-}
+#bg{
+background-image: linear-gradient(to left top, #1fccd7, #58d9db, #7be6e1, #9af2e8, #b6fff0);  }
 </style>
 
 

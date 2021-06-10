@@ -11,9 +11,13 @@
           height="75px"
           src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTmyyKFktIaaRswuuIzPQRFwcqch3y6SzTZow&usqp=CAU"
         >
-    <v-card-title class="fantasy white--text ">
-    <h3 class="ml-3">Add Details</h3><v-spacer></v-spacer>
-        <v-btn icon dark to="/placeorder">
+    <v-card-title class="fantasy white--text "><v-avatar size="56">
+              <img 
+                alt="user"
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvCnJeNwddh9sJ7lfZbAWsxhYS5Oq6_vWpqQ&usqp=CAU"
+              >
+            </v-avatar><h3 class="ml-3"> Customer Details</h3><v-spacer></v-spacer>
+        <v-btn icon dark to="/custList">
             <v-icon >mdi-arrow-right</v-icon>
           </v-btn></v-card-title></v-img><v-divider></v-divider>
         <v-form ref="form" class="pa-2" v-model="valid">
@@ -25,14 +29,26 @@
                     <v-text-field
                               outlined
                               shaped
-                              :rules="[(v) => !!v || 'Name is required']"
-                              label="Name"
+                              :rules="[(v) => !!v || 'First Name is required']"
+                              label="First Name"
                               type="text"
-                              v-model="name">
+                              v-model="fname">
                     </v-text-field>
                 </v-col>
-            
-            
+                <v-col
+                cols="12"
+                md="6">
+                <v-text-field
+                              outlined
+                              shaped
+                              :rules="[(v) => !!v || 'Last Name is required']"
+                              label="Last Name"
+                              type="text"
+                              v-model="lname">
+                              </v-text-field>
+                    </v-col>
+            </v-row>
+            <v-row>
                 <v-col
                 cols="12"
                 sm="6" >
@@ -40,69 +56,59 @@
                               shaped
                               required
                               outlined
-                              :rules="[(v) => !!v || 'Order ID is required']"
-                              label="Order ID"
-                              type="text"
-                              v-model="orderid">
+                              :rules="emailRules"
+                              label="Email"
+                              type="email"
+                              v-model="email">
                     </v-text-field>
                 </v-col>
-            </v-row>
-           <v-row>
-        <v-col
-        cols="12"
-      >
-        <v-text-field
-          shaped
-          outlined
-          :rules="[(v) => !!v || 'Address is required']"
-          name="input-7-4"
-          label="Permanent Address"
-          v-model="address"
-        ></v-text-field>
-      </v-col></v-row>
-      <v-row class="pb-3"><v-col
-                cols="12"
-                md="6">
-                <v-text-field
-                outlined
-                              shaped
-                              :rules="[(v) => !!v || 'Product name is required']"
-                              label="Product Name"
-                              type="text"
-                              v-model="pname">
-                              
-                              </v-text-field>
-                              </v-col>
-                              <v-col
+                <v-col
                 cols="12"
                 md="6">
                 <v-text-field
                               shaped
                               outlined
                               hide-details
-                              :rules="[(v) =>!!v || 'Price is required']"
-                              label="Price"
+                              :rules="[(v) => !!v || 'Password is required']"
+                              label="Password"
+                              type="password"
+                              v-model="password"></v-text-field>
+                    </v-col>
+            </v-row>
+           <v-row>
+        <v-col
+        cols="12"
+      >
+        <v-textarea
+          shaped
+          outlined
+          :rules="[(v) => !!v || 'Address is required']"
+          name="input-7-4"
+          label="Permanent Address"
+          v-model="address"
+        ></v-textarea>
+      </v-col></v-row>
+      <v-row class="pb-3"><v-col
+                cols="12"
+                md="6"><v-text-field
+                              shaped
+                              outlined
+                              hide-details
+                              :rules="[(v) => !!v || 'Phone No. is required']"
+                              label="Phone No."
                               type="text"
-                              v-model="price"></v-text-field>
-                              </v-col>
-                              </v-row>
-             <v-card-text>
-          
-          <v-row>
-          <v-col>
-
-      <p>Smart Contract</p>
-    <v-switch
-      v-model="switch1"
-      :label="`${switch1 ? 'Yes' : 'No'}`"
-    ></v-switch>
-    </v-col>
-    </v-row>
-
-    
-  
-  </v-card-text>
-                              <v-divider></v-divider>
+                              v-model="phoneno"></v-text-field></v-col>
+                              <v-col
+                cols="12"
+                md="6"><v-text-field
+                              shaped
+                              outlined
+                              hide-details
+                              :rules="[(v) =>!!v || 'PinCode is required']"
+                              label="PinCode"
+                              type="text"
+                              v-model="pincode"></v-text-field></v-col>
+                              </v-row><v-divider></v-divider>
             <div class="text-center pa-3">
                 <v-btn
                     class="ma-2"
@@ -144,25 +150,26 @@ font-family: cursive;}
 </style>
 <script>
 export default {
-  name: "Placeorder",
+  name: "CustDetails",
   data: () => ({
       valid:true,
-      name:'',
-      orderid:'',
+      fname:'',
+      lname:'',
+      email:'',
+      password:'',
+      phoneno:'',
       address:'',
-      pname:'',
-      price:'',
-      switch1: true,
+      pincode:'',
+      emailRules: [
+        v => !!v || 'E-mail is required',
+        v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
+      ],
   }),
   methods: {
-      change(){
-      this.switch1=!this.switch1;
-      console.log(this.switch1);
-    },
       reset(){
           this.$refs.form.reset()
       }
-  },
-  
+  }
 }
 </script>
+   
