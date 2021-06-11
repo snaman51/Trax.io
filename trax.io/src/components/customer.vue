@@ -1,5 +1,5 @@
-  <template>
-  <v-app>
+<template>
+  <v-app id="bg">
 <v-container class="mt-3">
 <v-card
     class="mx-auto"
@@ -73,6 +73,10 @@
     top:20vh;
   }
 
+  #bg{
+background-image: linear-gradient(to left top, #1fccd7, #58d9db, #7be6e1, #9af2e8, #b6fff0);  }
+
+
 </style>
 
 <script>
@@ -121,6 +125,7 @@ export default {
       initializeHereMap() { // rendering map
 
       const mapContainer = this.$refs.hereMap;
+      console.log(mapContainer)
       const H = window.H;
       // Obtain the default map types from the platform object
       var maptypes = this.platform.createDefaultLayers();

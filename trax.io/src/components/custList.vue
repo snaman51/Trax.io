@@ -126,55 +126,55 @@ export default {
             phoneno: 9677562045,
             address: "Kempapura Bangalore 560021"
           },
-          {
-            customerid: 121,
-            customername: "Rachel Mendonsa",
-            email: "Rachelg@gmail.com",
-            phoneno: 7521463892,
-            address: "Udupi Mangalore 560021"
-          },
-          {
-            customerid: 100,
-            customername: "Rachel C",
-            email: "rachelcg@gmail.com",
-            phoneno: 8088463892,
-            address: "Udupi Mangalore 560001"
-          },
-          {
-            customerid: 111,
-            customername: "Pearl Alfanso",
-            email: "pearlalfanso@gmail.com",
-            phoneno: 4561463892,
-            address: "kaiga Karnataka 560041"
-          },
-          {
-            customerid: 321,
-            customername: "Valesh M",
-            email: "valeshm@gmail.com",
-            phoneno: 9635287412,
-            address: "Mangalore Karnataka 560705"
-          },
-          {
-            customerid: 568,
-            customername: "Rajesh Rao",
-            email: "prajeshrao@gmail.com",
-            phoneno: 8054638921,
-            address: "Kudpu Karnataka 401231"
-          },
-          {
-            customerid: 141,
-            customername: "Rajath Rao",
-            email: "rajathr@gmail.com",
-            phoneno: 7896541235,
-            address: "Attavar Karnataka 222121"
-          },
-          {
-            customerid: 151,
-            customername: "Parashant Matho",
-            email: "prashantmatho.com",
-            phoneno: 9965541235,
-            address: "Vashi Mumbai 400705"
-          }
+          // {
+          //   customerid: 121,
+          //   customername: "Rachel Mendonsa",
+          //   email: "Rachelg@gmail.com",
+          //   phoneno: 7521463892,
+          //   address: "Udupi Mangalore 560021"
+          // },
+          // {
+          //   customerid: 100,
+          //   customername: "Rachel C",
+          //   email: "rachelcg@gmail.com",
+          //   phoneno: 8088463892,
+          //   address: "Udupi Mangalore 560001"
+          // },
+          // {
+          //   customerid: 111,
+          //   customername: "Pearl Alfanso",
+          //   email: "pearlalfanso@gmail.com",
+          //   phoneno: 4561463892,
+          //   address: "kaiga Karnataka 560041"
+          // },
+          // {
+          //   customerid: 321,
+          //   customername: "Valesh M",
+          //   email: "valeshm@gmail.com",
+          //   phoneno: 9635287412,
+          //   address: "Mangalore Karnataka 560705"
+          // },
+          // {
+          //   customerid: 568,
+          //   customername: "Rajesh Rao",
+          //   email: "prajeshrao@gmail.com",
+          //   phoneno: 8054638921,
+          //   address: "Kudpu Karnataka 401231"
+          // },
+          // {
+          //   customerid: 141,
+          //   customername: "Rajath Rao",
+          //   email: "rajathr@gmail.com",
+          //   phoneno: 7896541235,
+          //   address: "Attavar Karnataka 222121"
+          // },
+          // {
+          //   customerid: 151,
+          //   customername: "Parashant Matho",
+          //   email: "prashantmatho.com",
+          //   phoneno: 9965541235,
+          //   address: "Vashi Mumbai 400705"
+          // }
       ],
   }),
   computed: {
