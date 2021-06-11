@@ -1,5 +1,5 @@
 <template>
-  <v-app id="bgimg">
+  <v-app id="bg">
     <v-main>
     <v-toolbar dark dense src="https://wallpapercave.com/wp/wp7309638.jpg">
 
@@ -35,7 +35,7 @@
             </v-icon>
           </v-list-item-icon>
           <v-list-item-content>
-            <v-list-item-title> Real-Time Map </v-list-item-title>
+            <v-list-item-title v-on:click="home"> Real-Time Map </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
 
@@ -44,11 +44,11 @@
             <v-icon>mdi-account-cog</v-icon>
           </v-list-item-icon>
           <v-list-item-content>
-            <v-list-item-title v-on:click="sLogin">Seller Login</v-list-item-title>
+            <v-list-item-title v-on:click="sLogin">Login</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
 
-        <v-list-item>
+<!--        <v-list-item>
           <v-list-item-icon>
             <v-icon>mdi-account-cog</v-icon>
           </v-list-item-icon>
@@ -56,6 +56,7 @@
             <v-list-item-title> Customer Login </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        -->
         
         
       </v-list-item-group>
@@ -73,9 +74,8 @@
 
 
 <style>
-#bgimg {
-    background: url("https://st3.depositphotos.com/8343336/16085/i/1600/depositphotos_160850202-stock-photo-cargo-transportation-unloading-container-trucks.jpg") fill no-repeat center center;
-}
+#bg{
+background-image: linear-gradient(to left top, #1fccd7, #58d9db, #7be6e1, #9af2e8, #b6fff0);  }
 </style>
 
 
@@ -103,7 +103,11 @@ export default {
     methods: {
       sLogin() {
         this.$router.push("/login")
+      },
+      home() {
+        this.$router.push("/")
       }
+
     }
 };
 </script>

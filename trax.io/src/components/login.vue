@@ -7,6 +7,7 @@
     >
      
   <v-form
+  class="pa-9"
     ref="form"
     v-model="valid"
     lazy-validation
@@ -15,39 +16,21 @@
         align="center"
         justify="center"
         >
+        <v-chip-group
+        v-model="utype"
+        active-class="deep-purple--text text--accent-4"
+        mandatory
+      >
+        <v-chip value="seller">Seller</v-chip>
+        <v-chip value="customer">Customer</v-chip>
+        <v-chip value="courier">Courier</v-chip>
+        <v-chip value="admin">Admin</v-chip>
+      </v-chip-group>
 
-        <v-btn-toggle
-          v-model="utype"
-          v-on:click="userType(utype)"
-          
-        >
-          <v-btn 
-          id="togbutton" 
-          value="Seller">
-            Seller
-          </v-btn >
-
-          <v-btn
-          id="togbutton" 
-          value="Customer">
-            Customer
-          </v-btn>
-
-          <v-btn
-           id="togbutton"
-           value="Courier">
-            Courier
-          </v-btn >
-
-          <v-btn 
-          id="togbutton"
-          value="Admin" >
-            Admin
-          </v-btn>
-        </v-btn-toggle>
       </v-row>
 
-  <h3 class="card-header text-center">Login as {{utype}} </h3>
+  <h3 class="card-header text-center" v-if="utype">Login as {{utype}} </h3>
+  <h3 class="card-header text-center" v-if="!utype">Login </h3>
 
   <v-card-text 
   class="pb-0"
@@ -72,17 +55,16 @@
     ></v-text-field>
     </v-card-text>
 
-    <v-card-actions>
-    <v-btn id="button"
+    <div class="text-center">
+    <v-btn
       :disabled="!valid"
       color="primary"
-      class="mr-4"
       @click="validate"
-      v-on:click="openplaceorder(uname,password)"
+      v-on:click="openplaceorder(uname,password,utype)"
     >
       Sign In
     </v-btn>
-    </v-card-actions>
+    </div>
 
   </v-form>
   </v-card>
@@ -109,19 +91,21 @@ margin-left: 200px;
 text-align: center;
 font-size: 14px;
 }
+
 #bg{
-background-image: linear-gradient(to left top, #1fccd7, #58d9db, #7be6e1, #9af2e8, #b6fff0);  
-}
+background-image: linear-gradient(to left top, #1fccd7, #58d9db, #7be6e1, #9af2e8, #b6fff0);  }
+
 </style>
 
 
 <script>
+import { db } from "@/db.js";
 export default {
   name: "Login",
 
   data: () => ({
   valid: true,
-      utype:String,
+      utype:"",
       uname: '',
       password: '',
       nameRules: [
@@ -141,21 +125,20 @@ export default {
         this.$refs.form.validate()
       },
 
-       openplaceorder (uname,password) {  
-        {
-        if(uname == "rachel" && password == "rachel25"){
-          this.$router.push("/placeorder")
+       openplaceorder(uname,password,utype) { 
+         if(utype) {
+         console.log("utype",utype)
+
+        db.collection(utype).get().then((querySnapshot) => {
+    querySnapshot.forEach((doc) => {
+        if(uname == doc.data().uname && password == doc.data().password){
+          this.$router.push("/customerDashboard")
         }
-        'Invalid username or password'
-        }
+    });
+});
+       }
       }
     },
-
-  //  computed: {
-  //   nextpage() {
-  //     return () => (this.uname == "rachel") && (this.password == "rachel25") || 'Invalid username or password'
-  //   }
-  //  }
     
 };
 </script>
