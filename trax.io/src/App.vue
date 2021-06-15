@@ -35,7 +35,7 @@
             </v-icon>
           </v-list-item-icon>
           <v-list-item-content>
-            <v-list-item-title> Real-Time Map </v-list-item-title>
+            <v-list-item-title v-on:click="home"> Real-Time Map </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
 
@@ -44,11 +44,11 @@
             <v-icon>mdi-account-cog</v-icon>
           </v-list-item-icon>
           <v-list-item-content>
-            <v-list-item-title v-on:click="sLogin">Seller Login</v-list-item-title>
+            <v-list-item-title v-on:click="sLogin">Login</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
 
-        <v-list-item>
+<!--        <v-list-item>
           <v-list-item-icon>
             <v-icon>mdi-account-cog</v-icon>
           </v-list-item-icon>
@@ -56,6 +56,7 @@
             <v-list-item-title> Customer Login </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        -->
         
         
       </v-list-item-group>
@@ -102,7 +103,11 @@ export default {
     methods: {
       sLogin() {
         this.$router.push("/login")
+      },
+      home() {
+        this.$router.push("/")
       }
+
     }
 };
 </script>

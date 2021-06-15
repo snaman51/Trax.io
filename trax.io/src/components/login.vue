@@ -1,5 +1,5 @@
 <template>
-<v-app>
+<v-app id="bg">
 <v-container>
 <v-card
     class="mx-auto my-12"
@@ -7,6 +7,7 @@
     >
      
   <v-form
+  class="pa-9"
     ref="form"
     v-model="valid"
     lazy-validation
@@ -15,34 +16,17 @@
         align="center"
         justify="center"
         >
+        <v-chip-group
+        v-model="utype"
+        active-class="deep-purple--text text--accent-4"
+        mandatory
+      >
+        <v-chip value="seller">Seller</v-chip>
+        <v-chip value="customer">Customer</v-chip>
+        <v-chip value="courier">Courier</v-chip>
+        <v-chip value="admin">Admin</v-chip>
+      </v-chip-group>
 
-        <v-btn-toggle
-          v-model="utype" 
-        >
-          <v-btn 
-          id="togbutton" 
-          value="seller">
-            Seller
-          </v-btn >
-
-          <v-btn
-          id="togbutton" 
-          value="customer">
-            Customer
-          </v-btn>
-
-          <v-btn
-           id="togbutton"
-           value="courier">
-            Courier
-          </v-btn >
-
-          <v-btn 
-          id="togbutton"
-          value="admin" >
-            Admin
-          </v-btn>
-        </v-btn-toggle>
       </v-row>
 
   <h3 class="card-header text-center" v-if="utype">Login as {{utype}} </h3>
@@ -71,17 +55,16 @@
     ></v-text-field>
     </v-card-text>
 
-    <v-card-actions>
-    <v-btn id="button"
+    <div class="text-center">
+    <v-btn
       :disabled="!valid"
       color="primary"
-      class="mr-4"
       @click="validate"
       v-on:click="openplaceorder(uname,password,utype)"
     >
       Sign In
     </v-btn>
-    </v-card-actions>
+    </div>
 
   </v-form>
   </v-card>
@@ -108,6 +91,9 @@ margin-left: 200px;
 text-align: center;
 font-size: 14px;
 }
+
+#bg{
+background-image: linear-gradient(to left top, #1fccd7, #58d9db, #7be6e1, #9af2e8, #b6fff0);  }
 
 </style>
 
@@ -146,7 +132,7 @@ export default {
         db.collection(utype).get().then((querySnapshot) => {
     querySnapshot.forEach((doc) => {
         if(uname == doc.data().uname && password == doc.data().password){
-          this.$router.push("/customer")
+          this.$router.push("/customerDashboard")
         }
     });
 });
