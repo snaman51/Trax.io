@@ -15,8 +15,8 @@
                 alt="user"
                 src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvCnJeNwddh9sJ7lfZbAWsxhYS5Oq6_vWpqQ&usqp=CAU"
               >
-            </v-avatar><h3 class="ml-3"> Customer Details</h3><v-spacer></v-spacer>
-        <v-btn icon dark @click="navigation"> 
+            </v-avatar><h3 class="ml-3"> Seller Details</h3><v-spacer></v-spacer>
+        <v-btn icon dark to="/custList">
             <v-icon >mdi-arrow-right</v-icon>
           </v-btn></v-card-title></v-img><v-divider></v-divider>
         <v-form id="myform" ref="form" class="pa-2" v-model="valid">
@@ -36,7 +36,7 @@
                 </v-col>
                 <v-col
                 cols="12"
-                md="6">
+                sm="6">
                 <v-text-field
                               outlined
                               shaped
@@ -58,12 +58,12 @@
                               :rules="emailRules"
                               label="Email"
                               type="email"
-                              v-model="customerObj.uname">
+                              v-model="sellerObj.uname">
                     </v-text-field>
                 </v-col>
                 <v-col
                 cols="12"
-                md="6">
+                sm="6">
                 <v-text-field
                               shaped
                               outlined
@@ -71,7 +71,7 @@
                               :rules="[(v) => !!v || 'Password is required']"
                               label="Password"
                               type="password"
-                              v-model="customerObj.password"></v-text-field>
+                              v-model="sellerObj.password"></v-text-field>
                     </v-col>
             </v-row>
            <v-row>
@@ -89,17 +89,17 @@
       </v-col></v-row>
       <v-row class="pb-3"><v-col
                 cols="12"
-                md="6"><v-text-field
+                sm="6"><v-text-field
                               shaped
                               outlined
                               hide-details
                               :rules="[(v) => !!v || 'Phone No. is required']"
                               label="Phone No."
                               type="text"
-                              v-model="customerObj.phoneno"></v-text-field></v-col>
+                              v-model="sellerObj.phoneno"></v-text-field></v-col>
                               <v-col
                 cols="12"
-                md="6"><v-text-field
+                sm="6"><v-text-field
                               shaped
                               outlined
                               hide-details
@@ -113,7 +113,9 @@
                     class="ma-2"
                     color="primary"
                     dark
-                    v-on:click="addCustomer"
+                    type="submit"
+                    value="Send"
+                    v-on:click="addSeller"
                 >
                     <v-icon
                     dark
@@ -149,18 +151,18 @@
 font-family: cursive;}
 </style>
 <script>
-import {db} from "@/db.js"
 import emailjs from 'emailjs-com';
+import {db} from "@/db.js";
 import{ init } from 'emailjs-com';
 init("user_rjgSZyEgaFIJHNzi4znSn");
 export default {
-  name: "CustDetails",
+  name: "SellerDetails",
   data: () => ({
       fname:'',
       lname:'',
       paddress:'',
       pincode:'',
-      customerObj:{
+      sellerObj:{
       name:'',
       uname:'',
       password:'',
@@ -177,28 +179,24 @@ export default {
       reset(){
           this.$refs.form.reset()
       },
-      navigation(){
-        this.$router.go(-1)
-      },
-      addCustomer(){
-        
-        this.customerObj.name=this.fname+" "+this.lname;
-        this.customerObj.address=this.paddress+" "+this.pincode
-        db.collection("customer").add(this.customerObj)
+      addSeller(){
+        this.sellerObj.name=this.fname+" "+this.lname;
+        this.sellerObj.address=this.paddress+" "+this.pincode
+        db.collection("seller").add(this.sellerObj)
         .then((docRef) => {
-        console.log("Document written with ID: ", docRef.id);
-        emailjs.send("service_x9gq28i","template_pegalqg",
+      console.log("Document written with ID: ", docRef.id);
+emailjs.send("service_x9gq28i","template_pegalqg",
              {
-            name: this.customerObj.name,
-            uname: this.customerObj.uname,
-            password:this.customerObj.password
+            name: this.sellerObj.name,
+            uname: this.sellerObj.uname,
+            password:this.sellerObj.password
             })
 	.then(function(response) {
     console.log('SUCCESS!', response.status, response.text);
       },function(err) {
         console.log('FAILED...', err);
       })
-        })
+      })
       this.$refs.form.reset()
   }
   }

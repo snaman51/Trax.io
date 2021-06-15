@@ -15,7 +15,7 @@
                 alt="user"
                 src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvCnJeNwddh9sJ7lfZbAWsxhYS5Oq6_vWpqQ&usqp=CAU"
               >
-            </v-avatar><h3 class="ml-3"> Customer Details</h3><v-spacer></v-spacer>
+            </v-avatar><h3 class="ml-3"> Courier Details</h3><v-spacer></v-spacer>
         <v-btn icon dark @click="navigation"> 
             <v-icon >mdi-arrow-right</v-icon>
           </v-btn></v-card-title></v-img><v-divider></v-divider>
@@ -36,7 +36,7 @@
                 </v-col>
                 <v-col
                 cols="12"
-                md="6">
+                sm="6">
                 <v-text-field
                               outlined
                               shaped
@@ -58,12 +58,12 @@
                               :rules="emailRules"
                               label="Email"
                               type="email"
-                              v-model="customerObj.uname">
+                              v-model="CourierObj.uname">
                     </v-text-field>
                 </v-col>
                 <v-col
                 cols="12"
-                md="6">
+                sm="6">
                 <v-text-field
                               shaped
                               outlined
@@ -71,7 +71,7 @@
                               :rules="[(v) => !!v || 'Password is required']"
                               label="Password"
                               type="password"
-                              v-model="customerObj.password"></v-text-field>
+                              v-model="CourierObj.password"></v-text-field>
                     </v-col>
             </v-row>
            <v-row>
@@ -87,22 +87,20 @@
           v-model="paddress"
         ></v-textarea>
       </v-col></v-row>
-      <v-row class="pb-3"><v-col
+      <v-row class="pb-10"><v-col
                 cols="12"
-                md="6"><v-text-field
+                sm="6"><v-text-field
                               shaped
                               outlined
-                              hide-details
-                              :rules="[(v) => !!v || 'Phone No. is required']"
+                              :rules="phoneRules"
                               label="Phone No."
                               type="text"
-                              v-model="customerObj.phoneno"></v-text-field></v-col>
+                              v-model="CourierObj.phoneno"></v-text-field></v-col>
                               <v-col
                 cols="12"
-                md="6"><v-text-field
+                sm="6"><v-text-field
                               shaped
                               outlined
-                              hide-details
                               :rules="[(v) =>!!v || 'PinCode is required']"
                               label="PinCode"
                               type="text"
@@ -113,7 +111,7 @@
                     class="ma-2"
                     color="primary"
                     dark
-                    v-on:click="addCustomer"
+                    v-on:click="addCourier"
                 >
                     <v-icon
                     dark
@@ -154,13 +152,13 @@ import emailjs from 'emailjs-com';
 import{ init } from 'emailjs-com';
 init("user_rjgSZyEgaFIJHNzi4znSn");
 export default {
-  name: "CustDetails",
+  name: "CourierDetails",
   data: () => ({
       fname:'',
       lname:'',
       paddress:'',
       pincode:'',
-      customerObj:{
+      CourierObj:{
       name:'',
       uname:'',
       password:'',
@@ -172,6 +170,10 @@ export default {
         v => !!v || 'E-mail is required',
         v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
       ],
+      phoneRules: [
+        v => !!v || 'Name is required',
+        v => (v && v.length == 10) || 'Enter valid phone number',
+      ],
   }),
   methods: {
       reset(){
@@ -180,25 +182,24 @@ export default {
       navigation(){
         this.$router.go(-1)
       },
-      addCustomer(){
-        
-        this.customerObj.name=this.fname+" "+this.lname;
-        this.customerObj.address=this.paddress+" "+this.pincode
-        db.collection("customer").add(this.customerObj)
+      addCourier(){
+        this.CourierObj.name=this.fname+" "+this.lname;
+        this.CourierObj.address=this.paddress+" "+this.pincode
+        db.collection("Courier").add(this.CourierObj)
         .then((docRef) => {
         console.log("Document written with ID: ", docRef.id);
-        emailjs.send("service_x9gq28i","template_pegalqg",
+emailjs.send("service_x9gq28i","template_pegalqg",
              {
-            name: this.customerObj.name,
-            uname: this.customerObj.uname,
-            password:this.customerObj.password
+            name: this.CourierObj.name,
+            uname: this.CourierObj.uname,
+            password:this.CourierObj.password
             })
 	.then(function(response) {
     console.log('SUCCESS!', response.status, response.text);
       },function(err) {
         console.log('FAILED...', err);
       })
-        })
+      })
       this.$refs.form.reset()
   }
   }
