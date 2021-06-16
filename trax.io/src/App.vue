@@ -11,7 +11,7 @@
 
       <v-spacer></v-spacer>
 
-      <v-btn icon>
+      <v-btn icon v-on:click="logout">
         <v-icon>mdi-export</v-icon>
       </v-btn>
     </v-toolbar>
@@ -105,6 +105,9 @@ export default {
         this.$router.push("/login")
       },
       home() {
+        this.$router.push("/")
+      },
+      logout(){
         this.$router.push("/")
       }
 
