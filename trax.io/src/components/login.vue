@@ -37,7 +37,8 @@
    width="300">
     <v-text-field 
       v-model="uname"
-      :rules="nameRules"
+      prepend-icon="mdi-account-circle"
+      :rules="emailRules"
       label="Username"
       required
     ></v-text-field>
@@ -46,6 +47,7 @@
     <v-card-text>
     <v-text-field 
       v-model="password"
+      prepend-icon="mdi-lock"
       :rules="passRules"
       label="Password"
       :append-icon="value ? 'visibility_off' : 'visibility'"
@@ -54,6 +56,12 @@
       required
     ></v-text-field>
     </v-card-text>
+
+   <p v-if="errors.length">
+    <ul>
+      <li v-for="error in errors" v-bind:key="error">{{ error }}</li>
+    </ul>
+  </p>
 
     <div class="text-center">
     <v-btn
@@ -91,6 +99,9 @@ margin-left: 200px;
 text-align: center;
 font-size: 14px;
 }
+ul{
+  list-style-type: none;
+}
 
 #bg{
 background-image: linear-gradient(to left top, #1fccd7, #58d9db, #7be6e1, #9af2e8, #b6fff0);  }
@@ -108,9 +119,10 @@ export default {
       utype:"",
       uname: '',
       password: '',
-      nameRules: [
-        v => !!v || 'Name is required',
-        v => (v && v.length <= 10) || 'Name must be less than 10 characters',
+      errors:[],
+      emailRules: [
+        v => !!v || 'E-mail is required',
+        v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
       ],
       passRules: [
         v => !!v || 'Password is required',
@@ -130,10 +142,24 @@ export default {
          console.log("utype",utype)
 
         db.collection(utype).get().then((querySnapshot) => {
-    querySnapshot.forEach((doc) => {
-        if(uname == doc.data().uname && password == doc.data().password){
+        querySnapshot.forEach((doc) => {
+          console.log(doc.data().uname)
+          console.log(doc.data().password)
+        if(uname == doc.data().uname && password == doc.data().password ){
+          if(utype=="customer")
           this.$router.push("/customerDashboard")
+          else if(utype=="seller")
+          this.$router.push("/orderlist")
+          else if(utype=="admin")
+          this.$router.push("/custlist")
+          else if(utype=="courier")
+          this.$router.push("/")
         }
+        else{
+          this.errors=[];
+          this.errors.push('Invalid Username or password')
+        }
+        
     });
 });
        }
