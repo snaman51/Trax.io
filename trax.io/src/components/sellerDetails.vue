@@ -243,7 +243,7 @@ emailjs.send("service_x9gq28i","template_pegalqg",
         })
         }
   },
-    deletSeller(){
+    deleteSeller(){
     db.collection("seller").doc(this.$route.params.id).delete().then(() => {
     console.log("Document successfully deleted!");
     this.$router.push("/custList")
