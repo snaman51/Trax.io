@@ -15,7 +15,7 @@
                 alt="user"
                 src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvCnJeNwddh9sJ7lfZbAWsxhYS5Oq6_vWpqQ&usqp=CAU"
               >
-            </v-avatar><h3 class="ml-3"> Customer Details</h3><v-spacer></v-spacer>
+            </v-avatar><h3 class="ml-3"> Courier Details</h3><v-spacer></v-spacer>
         <v-btn icon dark @click="navigation"> 
             <v-icon >mdi-arrow-right</v-icon>
           </v-btn></v-card-title></v-img><v-divider></v-divider>
@@ -58,7 +58,7 @@
                               :rules="emailRules"
                               label="Email"
                               type="email"
-                              v-model="customerObj.uname">
+                              v-model="CourierObj.uname">
                     </v-text-field>
                 </v-col>
                 <v-col
@@ -71,7 +71,7 @@
                               :rules="[(v) => !!v || 'Password is required']"
                               label="Password"
                               type="password"
-                              v-model="customerObj.password"></v-text-field>
+                              v-model="CourierObj.password"></v-text-field>
                     </v-col>
             </v-row>
            <v-row>
@@ -87,7 +87,7 @@
           v-model="paddress"
         ></v-textarea>
       </v-col></v-row>
-      <v-row class="pb-3"><v-col
+      <v-row class="pb-10"><v-col
                 cols="12"
                 sm="6"><v-text-field
                               shaped
@@ -95,7 +95,7 @@
                               :rules="phoneRules"
                               label="Phone No."
                               type="text"
-                              v-model="customerObj.phoneno"></v-text-field></v-col>
+                              v-model="CourierObj.phoneno"></v-text-field></v-col>
                               <v-col
                 cols="12"
                 sm="6"><v-text-field
@@ -111,7 +111,7 @@
                     class="ma-2"
                     color="primary"
                     dark
-                    v-on:click="addCustomer"
+                    v-on:click="addCourier"
                 >
                     <v-icon
                     dark
@@ -132,18 +132,6 @@
                         mdi-minus-circle
                         </v-icon>Reset
                 </v-btn>   
-                <v-btn
-                        class="ma-2"
-                        color="error"
-                        @click="deleteCustomer"
-                    >
-                        <v-icon
-                        dark
-                        left
-                        >
-                        mdi-delete
-                        </v-icon>Delete
-                </v-btn>
     </div>
     </v-container>
     </v-form>
@@ -164,13 +152,13 @@ import emailjs from 'emailjs-com';
 import{ init } from 'emailjs-com';
 init("user_rjgSZyEgaFIJHNzi4znSn");
 export default {
-  name: "CustDetails",
+  name: "CourierDetails",
   data: () => ({
       fname:'',
       lname:'',
       paddress:'',
       pincode:'',
-      customerObj:{
+      CourierObj:{
       name:'',
       uname:'',
       password:'',
@@ -187,69 +175,32 @@ export default {
         v => (v && v.length == 10) || 'Enter valid phone number',
       ],
   }),
-
-  created() {
-    console.log(this.$route.params.id)
-    if(this.$route.name == "CustDetails"){
-      this.flag=1
-      db.collection("customer").doc(this.$route.params.id).get()
-      .then((docs)=>{
-        console.log("doc data",docs.data());
-        this.customerObj=docs.data();
-        var a=this.customerObj.name.split(" ")
-        console.log(a)
-        this.fname=a[0]
-        delete a[0]
-        console.log(a)
-        this.lname=a.join(" ")
-        var addr=this.customerObj.address.split(" ")
-        this.pincode=addr[addr.length-1]
-        delete addr[addr.length-1]
-        this.paddress=addr.join(" ")
-      })    
-      }
-  },
   methods: {
       reset(){
           this.$refs.form.reset()
       },
       navigation(){
-        this.$router.push("/custList")
+        this.$router.go(-1)
       },
-      addCustomer(){
-        if(this.$route.name=="CustCreate"){
-        this.customerObj.name=this.fname+" "+this.lname;
-        this.customerObj.address=this.paddress+" "+this.pincode
-        db.collection("customer").add(this.customerObj)
+      addCourier(){
+        this.CourierObj.name=this.fname+" "+this.lname;
+        this.CourierObj.address=this.paddress+" "+this.pincode
+        db.collection("Courier").add(this.CourierObj)
         .then((docRef) => {
         console.log("Document written with ID: ", docRef.id);
-        emailjs.send("service_x9gq28i","template_pegalqg",
+emailjs.send("service_x9gq28i","template_pegalqg",
              {
-            name: this.customerObj.name,
-            uname: this.customerObj.uname,
-            password:this.customerObj.password
+            name: this.CourierObj.name,
+            uname: this.CourierObj.uname,
+            password:this.CourierObj.password
             })
 	.then(function(response) {
     console.log('SUCCESS!', response.status, response.text);
       },function(err) {
         console.log('FAILED...', err);
       })
-        })
+      })
       this.$refs.form.reset()
-      }
-      else{
-        this.customerObj.name=this.fname+" "+this.lname;
-        this.customerObj.address=this.paddress+" "+this.pincode
-        db.collection("customer").doc(this.$route.params.id).update(this.customerObj).then(()=>{
-          console.log("Updated successfully")
-        })
-      }
-  },
-  deleteCustomer(){
-    db.collection("customer").doc(this.$route.params.id).delete().then(() => {
-    console.log("Document successfully deleted!");
-    this.$router.push("/custList")
-})
   }
   }
   

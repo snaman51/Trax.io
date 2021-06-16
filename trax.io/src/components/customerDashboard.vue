@@ -16,7 +16,7 @@
         <tr
           v-for="order in orders"
           :key="order.orderID"
-          v-on:click="customer"
+          v-on:click="customer(order.orderID)"
         >
           <td>{{ order.orderID }}</td>
           <td>{{ order.date }}</td>
@@ -37,39 +37,27 @@
 </style>
 
 <script>
-
+import {db} from "@/db.js";
 export default {
   name: "CustomerDashboard",
 
   data: () => ({
-      orders: [
-          {
-            orderID: '82736382',
-            date: "12-05-2021",
-          },
-          {
-            orderID: '83624367',
-            date: "19-04-2021",
-          },
-          {
-            orderID: '85635278',
-            date: "21-03-2021",
-          },
-          {
-            orderID: '93746378',
-            date: "19-03-2021",
-          },
-          {
-            orderID: '53628467',
-            date: "15-02-2021",
-          },
-        ],
+      orders: [],
 
     }),
 
+    created(){
+      db.collection("order").orderBy("date").get().then((docs)=>{
+        docs.forEach((doc)=>{
+          this.orders.push({"orderID":doc.id,"date":doc.data().date})
+        })
+      })
+
+    },
+
   methods: {
-      customer() {
-          this.$router.push("customer")
+      customer(orderid) {
+          this.$router.push({ path: `/customer/${orderid}` })  
       }
     
   }

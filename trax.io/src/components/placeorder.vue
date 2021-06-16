@@ -12,8 +12,8 @@
           src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTmyyKFktIaaRswuuIzPQRFwcqch3y6SzTZow&usqp=CAU"
         >
     <v-card-title class="fantasy white--text ">
-    <h3 class="ml-3">Add Details</h3><v-spacer></v-spacer>
-        <v-btn icon dark to="/placeorder">
+    <h3 class="ml-3 " >Add Details</h3><v-spacer></v-spacer>
+        <v-btn icon dark @click="navigation">
             <v-icon >mdi-arrow-right</v-icon>
           </v-btn></v-card-title></v-img><v-divider></v-divider>
         <v-form ref="form" class="pa-2" v-model="valid">
@@ -33,19 +33,7 @@
                 </v-col>
             
             
-                <v-col
-                cols="12"
-                sm="6" >
-                    <v-text-field
-                              shaped
-                              required
-                              outlined
-                              :rules="[(v) => !!v || 'Order ID is required']"
-                              label="Order ID"
-                              type="text"
-                              v-model="orderid">
-                    </v-text-field>
-                </v-col>
+                
             </v-row>
            <v-row>
         <v-col
@@ -108,6 +96,7 @@
                     class="ma-2"
                     color="primary"
                     dark
+                    v-on:click="addOrder"
                 >
                     <v-icon
                     dark
@@ -119,7 +108,7 @@
                 <v-btn
                         class="ma-2"
                         dark
-                        @click="reset"
+                        v-on:click="reset"
                     >
                         <v-icon
                         dark
@@ -143,16 +132,27 @@
 font-family: cursive;}
 </style>
 <script>
+import {db} from "@/db.js";
 export default {
-  name: "Placeorder",
+ 
+
+    name: "Placeorder",
   data: () => ({
-      valid:true,
       name:'',
-      orderid:'',
       address:'',
       pname:'',
       price:'',
-      switch1: true,
+      switch1: false,
+      orderObj:{
+      name:'',
+      id:'',
+      date:'',
+      address:'',
+      pname:'',
+      price:'',
+      switch1: null
+      },
+      valid:true,
   }),
   methods: {
       change(){
@@ -161,8 +161,37 @@ export default {
     },
       reset(){
           this.$refs.form.reset()
-      }
+      },
+      navigation(){
+        this.$router.go(-1)
+      },
+      addOrder(){
+        
+
+        var Docref=db.collection("order").doc()
+        Docref.set({
+          date:Date.now(),
+          name:this.name,
+          address:this.address,
+          pname:this.pname,
+          price:this.price,
+          switch1:this.switch1,
+          id: Docref.id
+
+
+        })
+        .then(() => {
+        console.log("Document written with ID: ");
+ })
+      this.$refs.form.reset()
+  },
   },
   
 }
 </script>
+var newDocRef = db.collection('collectionname').doc();
+newDocRef.set({
+                 name:'Jhon Doe',
+                 job:'Programmer',
+                 id: newDocRef.id
+          })

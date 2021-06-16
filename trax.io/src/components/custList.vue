@@ -4,36 +4,54 @@
     <v-btn-toggle v-model="toggle">  
     <v-btn
       text
-      value="Customer"
+      value="customer"
       color="primary"
+      @click="listDetails('customer')"
     >Customer
     </v-btn>
     <v-btn
       text
-      value="Seller"
+      value="seller"
       color="primary"
+      @click="listDetails('seller')"
     >Seller
     </v-btn>
     <v-btn
       text
-      value="Courier"
+      value="courier"
       color="primary"
+      @click="listDetails(value)"
     >Courier
     </v-btn></v-btn-toggle>
 </v-toolbar>
-      <v-card class="mt-0">
-    <v-toolbar style="flex: 0 0 auto;" dark class="primary">
+  <v-card height="100%">
+    <v-toolbar v-if="toggle==='customer'" style="flex: 0 0 auto;" dark class="primary">
      
-      <v-toolbar-title>Customer</v-toolbar-title>
+      <v-toolbar-title >{{toggle}}</v-toolbar-title>
 
       <v-spacer></v-spacer>
       <v-btn
       class="ma-2"
       outlined
       color="white"
-      to="/custDetails"
+      to="/custCreate"
     >
       Add Customer
+    </v-btn>
+      
+    </v-toolbar>
+    <v-toolbar v-if="toggle==='seller'" style="flex: 0 0 auto;" dark class="primary">
+     
+      <v-toolbar-title >{{toggle}}</v-toolbar-title>
+
+      <v-spacer></v-spacer>
+      <v-btn
+      class="ma-2"
+      outlined
+      color="white"
+      to="/sellerDetails"
+    >
+      Add Seller
     </v-btn>
       
     </v-toolbar>
@@ -52,12 +70,34 @@
         ></v-text-field>
       </v-card-title>
       <!-- <v-pagination v-model="pagination.page" :length="pages"></v-pagination> -->
-      <v-data-table
+      <v-data-table v-if="toggle==='customer'"
         v-bind:headers="headers"
-        v-bind:items="items"
+        v-bind:items="customerArr"
         v-bind:search="search"
-        v-bind:pagination.sync="pagination"
-        hide-actions
+        :items-per-page="10"
+        :footer-props="footerProps" 
+        @click:row="editCustomer"         
+        :header-props="{ sortIcon: null }"
+        class="elevation-3"
+      >
+        <template slot="headerCell" scope="props">
+          <v-tooltip bottom>
+            <span>
+              {{ props.header.text }}
+            </span>
+          </v-tooltip>
+        </template>
+        <template slot="customerArr" scope="props">
+          <td v-for="header in headers" :key="header">{{ props.item[header.value] }}</td>
+        </template>
+      </v-data-table>
+      <v-data-table v-if="toggle==='seller'"
+        v-bind:headers="headers"
+        v-bind:items="sellerArr"
+        v-bind:search="search"
+        :items-per-page="10"
+        :footer-props="footerProps"  
+        @click:row="editSeller"  
         :header-props="{ sortIcon: null }"
         class="elevation-1"
       >
@@ -66,17 +106,31 @@
             <span>
               {{ props.header.text }}
             </span>
+          </v-tooltip>
+        </template>
+        <template slot="sellerArr" scope="props">
+          <td v-for="header in headers" :key="header">{{ props.item[header.value] }}</td>
+        </template>
+      </v-data-table>
+      <v-data-table v-if="toggle==='courier'"
+        v-bind:headers="courierheaders"
+        v-bind:items="courierArr"
+        v-bind:search="search"
+        :items-per-page="10"
+        :footer-props="footerProps"  
+        @click:row="editCourier"       
+        :header-props="{ sortIcon: null }"
+        class="elevation-1"
+      >
+        <template slot="headerCell" scope="props">
+          <v-tooltip bottom>
             <span>
               {{ props.header.text }}
             </span>
           </v-tooltip>
         </template>
-        <template slot="items" scope="props">
-          <td>{{ props.item.customerid }}</td>
-          <td  class="text-xs-right">{{ props.item.customername }}</td>
-          <td  class="text-xs-right">{{ props.item.email }}</td>
-          <td  class="text-xs-right">{{ props.item.phoneno }}</td>
-          <td  class="text-xs-right">{{ props.item.address }}</td>
+        <template slot="courierArr" scope="props">
+          <td v-for="header in courierheaders" :key="header">{{ props.item[header.value] }}</td>
         </template>
       </v-data-table>
       </v-card-text>
@@ -85,104 +139,96 @@
   </v-app>
 </template>
 <script>
+import {db} from "@/db.js"
 export default {
   name: "CustList",
 
   data: () => ({
       search: '',
-      pagination: {},
-      selected: [],
+      footerProps: {},
+      customerArr:[],
+      sellerArr:[],
+      courierArr:[],
       headers: [
         {
-          text: 'Customer ID',
+          text: ' ID',
           align: 'left',
-          value: 'customerid'
+          value: 'id'
         },
-        { text: 'Customer Name', value: 'customername' },
-        { text: 'Email', value: 'email' },
+        { text: 'Name', value: 'name' },
+        { text: 'Email', value: 'uname' },
         { text: 'Phone NO', value: 'phoneno' },
         { text: 'Address', value: 'address' }
       ],
-      items: [
+      courierheaders: [
         {
-            customerid: 123,
-            customername: "Treesa Antony",
-            email: "tresatritto28@gmail.com",
-            phoneno: 9148760505,
-            address: "KoperKhairne Navi mumbai 400709"
-
-          },
-          {
-            customerid: 102,
-            customername: "Samson Naman",
-            email: "snaman@gmail.com",
-            phoneno: 9663742451,
-            address: "Hebbal Kempapura Bangalore 560024"
-          },
-          {
-            customerid: 103,
-            customername: "Santhanu Ashok",
-            email: "santhanu@gmail.com",
-            phoneno: 9677562045,
-            address: "Kempapura Bangalore 560021"
-          },
-          // {
-          //   customerid: 121,
-          //   customername: "Rachel Mendonsa",
-          //   email: "Rachelg@gmail.com",
-          //   phoneno: 7521463892,
-          //   address: "Udupi Mangalore 560021"
-          // },
-          // {
-          //   customerid: 100,
-          //   customername: "Rachel C",
-          //   email: "rachelcg@gmail.com",
-          //   phoneno: 8088463892,
-          //   address: "Udupi Mangalore 560001"
-          // },
-          // {
-          //   customerid: 111,
-          //   customername: "Pearl Alfanso",
-          //   email: "pearlalfanso@gmail.com",
-          //   phoneno: 4561463892,
-          //   address: "kaiga Karnataka 560041"
-          // },
-          // {
-          //   customerid: 321,
-          //   customername: "Valesh M",
-          //   email: "valeshm@gmail.com",
-          //   phoneno: 9635287412,
-          //   address: "Mangalore Karnataka 560705"
-          // },
-          // {
-          //   customerid: 568,
-          //   customername: "Rajesh Rao",
-          //   email: "prajeshrao@gmail.com",
-          //   phoneno: 8054638921,
-          //   address: "Kudpu Karnataka 401231"
-          // },
-          // {
-          //   customerid: 141,
-          //   customername: "Rajath Rao",
-          //   email: "rajathr@gmail.com",
-          //   phoneno: 7896541235,
-          //   address: "Attavar Karnataka 222121"
-          // },
-          // {
-          //   customerid: 151,
-          //   customername: "Parashant Matho",
-          //   email: "prashantmatho.com",
-          //   phoneno: 9965541235,
-          //   address: "Vashi Mumbai 400705"
-          // }
+          text: ' ID',
+          align: 'left',
+          value: 'id'
+        },
+        { text: 'Email', value: 'uname' },
+        { text: 'Phone NO', value: 'phoneno' },
+        { text: 'Warehouse Address', value: 'address' }
       ],
+      toggle:"customer"
+     
   }),
+  created:function(){
+    db.collection('customer').get()
+      .then(snapshot => {
+        snapshot.forEach(doc => {
+          let customer = doc.data()
+          customer.id = doc.id
+          this.customerArr.push(customer)
+        })
+      })
+    
+  },
   computed: {
     pages () {
-      return this.pagination.rowsPerPage ? Math.ceil(this.items.length / this.pagination.rowsPerPage) : 0
+      return this.footerProps.rowsPerPage ? Math.ceil(this.items.length / this.pagination.rowsPerPage) : 0
     }
   },
   methods: {
+    listDetails (value){
+      this.toggle=value
+      if(this.toggle!=''){
+      this.sellerArr=[]
+      this.customerArr=[]
+      db.collection(this.toggle).get()
+      .then(snapshot => {
+        snapshot.forEach(doc => {
+          if(this.toggle=='customer'){
+          let customer = doc.data()
+          customer.id = doc.id
+          this.customerArr.push(customer)
+          }
+          else if(this.toggle=="seller"){
+            let seller = doc.data()
+            seller.id = doc.id
+            this.sellerArr.push(seller)
+          }
+          else if(this.toggle=="courier"){
+            let courier = doc.data()
+            courier.id = doc.id
+            this.courierArr.push(courier)
+
+          }          
+        })
+      })
+      }
+    },
+
+    editCustomer(value){
+      this.$router.push({ path: `/custDetails/${value.id}` })
+    },
+    editSeller(value){
+      this.$router.push({ path: `/sellerDetails/${value.id}` })
+    },
+    editCourier(value){
+      this.$router.push({ path: `/ccourierDetails/${value.id}` })
+    }
+
   }
 }
 </script>
