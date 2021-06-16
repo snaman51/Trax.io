@@ -15,8 +15,8 @@
                 alt="user"
                 src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvCnJeNwddh9sJ7lfZbAWsxhYS5Oq6_vWpqQ&usqp=CAU"
               >
-            </v-avatar><h3 class="ml-3"> Customer Details</h3><v-spacer></v-spacer>
-        <v-btn icon dark @click="navigation"> 
+            </v-avatar><h3 class="ml-3"> Seller Details</h3><v-spacer></v-spacer>
+        <v-btn icon dark to="/custList">
             <v-icon >mdi-arrow-right</v-icon>
           </v-btn></v-card-title></v-img><v-divider></v-divider>
         <v-form id="myform" ref="form" class="pa-2" v-model="valid">
@@ -58,7 +58,7 @@
                               :rules="emailRules"
                               label="Email"
                               type="email"
-                              v-model="customerObj.uname">
+                              v-model="sellerObj.uname">
                     </v-text-field>
                 </v-col>
                 <v-col
@@ -71,7 +71,7 @@
                               :rules="[(v) => !!v || 'Password is required']"
                               label="Password"
                               type="password"
-                              v-model="customerObj.password"></v-text-field>
+                              v-model="sellerObj.password"></v-text-field>
                     </v-col>
             </v-row>
            <v-row>
@@ -95,7 +95,7 @@
                               :rules="phoneRules"
                               label="Phone No."
                               type="text"
-                              v-model="customerObj.phoneno"></v-text-field></v-col>
+                              v-model="sellerObj.phoneno"></v-text-field></v-col>
                               <v-col
                 cols="12"
                 sm="6"><v-text-field
@@ -111,7 +111,9 @@
                     class="ma-2"
                     color="primary"
                     dark
-                    v-on:click="addCustomer"
+                    type="submit"
+                    value="Send"
+                    v-on:click="addSeller"
                 >
                     <v-icon
                     dark
@@ -131,11 +133,11 @@
                         >
                         mdi-minus-circle
                         </v-icon>Reset
-                </v-btn>   
+                </v-btn> 
                 <v-btn
                         class="ma-2"
                         color="error"
-                        @click="deleteCustomer"
+                        @click="deleteSeller"
                     >
                         <v-icon
                         dark
@@ -143,7 +145,7 @@
                         >
                         mdi-delete
                         </v-icon>Delete
-                </v-btn>
+                </v-btn>  
     </div>
     </v-container>
     </v-form>
@@ -159,18 +161,18 @@
 font-family: cursive;}
 </style>
 <script>
-import {db} from "@/db.js"
 import emailjs from 'emailjs-com';
+import {db} from "@/db.js";
 import{ init } from 'emailjs-com';
 init("user_rjgSZyEgaFIJHNzi4znSn");
 export default {
-  name: "CustDetails",
+  name: "SellerDetails",
   data: () => ({
       fname:'',
       lname:'',
       paddress:'',
       pincode:'',
-      customerObj:{
+      sellerObj:{
       name:'',
       uname:'',
       password:'',
@@ -188,65 +190,61 @@ export default {
       ],
   }),
 
-  created() {
+    created() {
     console.log(this.$route.params.id)
-    if(this.$route.name == "CustDetails"){
+    if(this.$route.name == "SellerDetails"){
       this.flag=1
-      db.collection("customer").doc(this.$route.params.id).get()
+      db.collection("seller").doc(this.$route.params.id).get()
       .then((docs)=>{
         console.log("doc data",docs.data());
-        this.customerObj=docs.data();
-        var a=this.customerObj.name.split(" ")
-        console.log(a)
+        this.sellerObj=docs.data();
+        var a=this.sellerObj.name.split(" ")
         this.fname=a[0]
         delete a[0]
-        console.log(a)
         this.lname=a.join(" ")
-        var addr=this.customerObj.address.split(" ")
+        var addr=this.sellerObj.address.split(" ")
         this.pincode=addr[addr.length-1]
         delete addr[addr.length-1]
         this.paddress=addr.join(" ")
       })    
       }
   },
+
   methods: {
       reset(){
           this.$refs.form.reset()
       },
-      navigation(){
-        this.$router.push("/custList")
-      },
-      addCustomer(){
-        if(this.$route.name=="CustCreate"){
-        this.customerObj.name=this.fname+" "+this.lname;
-        this.customerObj.address=this.paddress+" "+this.pincode
-        db.collection("customer").add(this.customerObj)
+      addSeller(){
+        if(this.$route.name=="SellerCreate"){
+        this.sellerObj.name=this.fname+" "+this.lname;
+        this.sellerObj.address=this.paddress+" "+this.pincode
+        db.collection("seller").add(this.sellerObj)
         .then((docRef) => {
-        console.log("Document written with ID: ", docRef.id);
-        emailjs.send("service_x9gq28i","template_pegalqg",
+      console.log("Document written with ID: ", docRef.id);
+emailjs.send("service_x9gq28i","template_pegalqg",
              {
-            name: this.customerObj.name,
-            uname: this.customerObj.uname,
-            password:this.customerObj.password
+            name: this.sellerObj.name,
+            uname: this.sellerObj.uname,
+            password:this.sellerObj.password
             })
 	.then(function(response) {
     console.log('SUCCESS!', response.status, response.text);
       },function(err) {
         console.log('FAILED...', err);
       })
-        })
+      })
       this.$refs.form.reset()
-      }
-      else{
-        this.customerObj.name=this.fname+" "+this.lname;
-        this.customerObj.address=this.paddress+" "+this.pincode
-        db.collection("customer").doc(this.$route.params.id).update(this.customerObj).then(()=>{
+        }
+        else{
+        this.sellerObj.name=this.fname+" "+this.lname;
+        this.sellerObj.address=this.paddress+" "+this.pincode
+        db.collection("seller").doc(this.$route.params.id).update(this.sellerObj).then(()=>{
           console.log("Updated successfully")
         })
-      }
+        }
   },
-  deleteCustomer(){
-    db.collection("customer").doc(this.$route.params.id).delete().then(() => {
+    deletSeller(){
+    db.collection("seller").doc(this.$route.params.id).delete().then(() => {
     console.log("Document successfully deleted!");
     this.$router.push("/custList")
 })

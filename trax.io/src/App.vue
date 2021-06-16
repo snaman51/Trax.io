@@ -35,7 +35,7 @@
             </v-icon>
           </v-list-item-icon>
           <v-list-item-content>
-            <v-list-item-title v-on:click="home"> Real-Time Map </v-list-item-title>
+            <v-list-item-title v-on:click="home"> Track Order </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
 
