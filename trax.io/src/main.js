@@ -24,12 +24,16 @@ const router = new VueRouter({
     { path: '/login', name: 'login', component: Login },
     {path: '/customer/:orderid',name: 'customer', component: Customer, params:true},
     { path: '/customerDashboard', name: 'customerDashboard', component: CustomerDashboard },
-    {path:'/custDetails',name:'CustDetails',component:CustDetails},
+    {path:'/custDetails/:id',name:'CustDetails',component:CustDetails},
+    {path:'/custCreate',name:'CustCreate',component:CustDetails},
+    {path:'/sellerDetails/:id',name:'SellerDetails',component:SellerDetails},
+    {path:'/sellerCreate',name:'SellerCreate',component:SellerDetails},
+    {path:'/courierDetails/:id',name:'CourierDetails',component:CourierDetails},
+    {path:'/courierCreate',name:'CourierCreate',component:CourierDetails},
     {path:'/custList',name:'CustList',component:CustList},
     { path: '/placeorder', name: 'placeorder', component: Placeorder},
     { path: '/orderlist', name: 'orderlist', component: Orderlist},
-    {path:'/sellerDetails',name:'SellerDetails',component:SellerDetails},
-    {path:'/courierDetails',name:'CourierDetails',component:CourierDetails},
+    
 
   ]
 })

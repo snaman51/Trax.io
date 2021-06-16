@@ -34,7 +34,7 @@
       class="ma-2"
       outlined
       color="white"
-      to="/custDetails"
+      to="/custCreate"
     >
       Add Customer
     </v-btn>
@@ -75,9 +75,9 @@
         v-bind:items="customerArr"
         v-bind:search="search"
         :items-per-page="10"
-        :footer-props="footerProps"       
+        :footer-props="footerProps" 
+        @click:row="editCustomer"         
         :header-props="{ sortIcon: null }"
-        @click:row="viewCustomer"
         class="elevation-3"
       >
         <template slot="headerCell" scope="props">
@@ -96,7 +96,8 @@
         v-bind:items="sellerArr"
         v-bind:search="search"
         :items-per-page="10"
-        :footer-props="footerProps"       
+        :footer-props="footerProps"  
+        @click:row="editSeller"  
         :header-props="{ sortIcon: null }"
         class="elevation-1"
       >
@@ -116,7 +117,8 @@
         v-bind:items="courierArr"
         v-bind:search="search"
         :items-per-page="10"
-        :footer-props="footerProps"       
+        :footer-props="footerProps"  
+        @click:row="editCourier"       
         :header-props="{ sortIcon: null }"
         class="elevation-1"
       >
@@ -153,7 +155,7 @@ export default {
           align: 'left',
           value: 'id'
         },
-        { text: ' Name', value: 'name' },
+        { text: 'Name', value: 'name' },
         { text: 'Email', value: 'uname' },
         { text: 'Phone NO', value: 'phoneno' },
         { text: 'Address', value: 'address' }
@@ -205,7 +207,6 @@ export default {
             let seller = doc.data()
             seller.id = doc.id
             this.sellerArr.push(seller)
-            console.log(this.sellerArr)
           }
           else if(this.toggle=="courier"){
             let courier = doc.data()
@@ -216,6 +217,16 @@ export default {
         })
       })
       }
+    },
+
+    editCustomer(value){
+      this.$router.push({ path: `/custDetails/${value.id}` })
+    },
+    editSeller(value){
+      this.$router.push({ path: `/sellerDetails/${value.id}` })
+    },
+    editCourier(value){
+      this.$router.push({ path: `/ccourierDetails/${value.id}` })
     }
 
   }

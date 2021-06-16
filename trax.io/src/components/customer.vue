@@ -100,21 +100,6 @@ export default {
       defaultLayers: null,
       apikey: "UndrPfgxVRfeeL0lM6oEuHYJIdngdG7D9jYXLrKr7Q8",
        messages: [
-        // {
-        //   place: 'Delhi',
-        //   time: '10:42am',
-        //   color: 'deep-purple lighten-1',
-        // },
-        // {
-        //   place: 'Mumbai',
-        //   time: '2:37pm',
-        //   color: 'green',
-        // },
-        // {
-        //   place: 'Bangalore',
-        //   time: '5:47pm',
-        //   color: 'deep-purple lighten-1',
-        // },
       ],
 
     }),
@@ -130,6 +115,7 @@ this.initializeHereMap();
 
   methods: {
       initializeHereMap() { // rendering map
+      this.messages=[]
 
       const H = window.H;
       defaultLayers = platform.createDefaultLayers();
@@ -282,10 +268,6 @@ router.calculateRoute(routingParameters, onResult,
       // add behavior control
       new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
       
-
-
-
-
 })
 
   }

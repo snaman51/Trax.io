@@ -92,8 +92,7 @@
                 sm="6"><v-text-field
                               shaped
                               outlined
-                              hide-details
-                              :rules="[(v) => !!v || 'Phone No. is required']"
+                              :rules="phoneRules"
                               label="Phone No."
                               type="text"
                               v-model="sellerObj.phoneno"></v-text-field></v-col>
@@ -102,7 +101,6 @@
                 sm="6"><v-text-field
                               shaped
                               outlined
-                              hide-details
                               :rules="[(v) =>!!v || 'PinCode is required']"
                               label="PinCode"
                               type="text"
@@ -135,7 +133,19 @@
                         >
                         mdi-minus-circle
                         </v-icon>Reset
-                </v-btn>   
+                </v-btn> 
+                <v-btn
+                        class="ma-2"
+                        color="error"
+                        @click="deleteSeller"
+                    >
+                        <v-icon
+                        dark
+                        left
+                        >
+                        mdi-delete
+                        </v-icon>Delete
+                </v-btn>  
     </div>
     </v-container>
     </v-form>
@@ -174,12 +184,38 @@ export default {
         v => !!v || 'E-mail is required',
         v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
       ],
+      phoneRules: [
+        v => !!v || 'Name is required',
+        v => (v && v.length == 10) || 'Enter valid phone number',
+      ],
   }),
+
+    created() {
+    console.log(this.$route.params.id)
+    if(this.$route.name == "SellerDetails"){
+      this.flag=1
+      db.collection("seller").doc(this.$route.params.id).get()
+      .then((docs)=>{
+        console.log("doc data",docs.data());
+        this.sellerObj=docs.data();
+        var a=this.sellerObj.name.split(" ")
+        this.fname=a[0]
+        delete a[0]
+        this.lname=a.join(" ")
+        var addr=this.sellerObj.address.split(" ")
+        this.pincode=addr[addr.length-1]
+        delete addr[addr.length-1]
+        this.paddress=addr.join(" ")
+      })    
+      }
+  },
+
   methods: {
       reset(){
           this.$refs.form.reset()
       },
       addSeller(){
+        if(this.$route.name=="SellerCreate"){
         this.sellerObj.name=this.fname+" "+this.lname;
         this.sellerObj.address=this.paddress+" "+this.pincode
         db.collection("seller").add(this.sellerObj)
@@ -198,6 +234,20 @@ emailjs.send("service_x9gq28i","template_pegalqg",
       })
       })
       this.$refs.form.reset()
+        }
+        else{
+        this.sellerObj.name=this.fname+" "+this.lname;
+        this.sellerObj.address=this.paddress+" "+this.pincode
+        db.collection("seller").doc(this.$route.params.id).update(this.sellerObj).then(()=>{
+          console.log("Updated successfully")
+        })
+        }
+  },
+    deletSeller(){
+    db.collection("seller").doc(this.$route.params.id).delete().then(() => {
+    console.log("Document successfully deleted!");
+    this.$router.push("/custList")
+})
   }
   }
   

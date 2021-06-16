@@ -36,7 +36,7 @@
                 </v-col>
                 <v-col
                 cols="12"
-                md="6">
+                sm="6">
                 <v-text-field
                               outlined
                               shaped
@@ -63,7 +63,7 @@
                 </v-col>
                 <v-col
                 cols="12"
-                md="6">
+                sm="6">
                 <v-text-field
                               shaped
                               outlined
@@ -89,20 +89,18 @@
       </v-col></v-row>
       <v-row class="pb-3"><v-col
                 cols="12"
-                md="6"><v-text-field
+                sm="6"><v-text-field
                               shaped
                               outlined
-                              hide-details
-                              :rules="[(v) => !!v || 'Phone No. is required']"
+                              :rules="phoneRules"
                               label="Phone No."
                               type="text"
                               v-model="customerObj.phoneno"></v-text-field></v-col>
                               <v-col
                 cols="12"
-                md="6"><v-text-field
+                sm="6"><v-text-field
                               shaped
                               outlined
-                              hide-details
                               :rules="[(v) =>!!v || 'PinCode is required']"
                               label="PinCode"
                               type="text"
@@ -134,6 +132,18 @@
                         mdi-minus-circle
                         </v-icon>Reset
                 </v-btn>   
+                <v-btn
+                        class="ma-2"
+                        color="error"
+                        @click="deleteCustomer"
+                    >
+                        <v-icon
+                        dark
+                        left
+                        >
+                        mdi-delete
+                        </v-icon>Delete
+                </v-btn>
     </div>
     </v-container>
     </v-form>
@@ -172,16 +182,42 @@ export default {
         v => !!v || 'E-mail is required',
         v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
       ],
+      phoneRules: [
+        v => !!v || 'Name is required',
+        v => (v && v.length == 10) || 'Enter valid phone number',
+      ],
   }),
+
+  created() {
+    console.log(this.$route.params.id)
+    if(this.$route.name == "CustDetails"){
+      this.flag=1
+      db.collection("customer").doc(this.$route.params.id).get()
+      .then((docs)=>{
+        console.log("doc data",docs.data());
+        this.customerObj=docs.data();
+        var a=this.customerObj.name.split(" ")
+        console.log(a)
+        this.fname=a[0]
+        delete a[0]
+        console.log(a)
+        this.lname=a.join(" ")
+        var addr=this.customerObj.address.split(" ")
+        this.pincode=addr[addr.length-1]
+        delete addr[addr.length-1]
+        this.paddress=addr.join(" ")
+      })    
+      }
+  },
   methods: {
       reset(){
           this.$refs.form.reset()
       },
       navigation(){
-        this.$router.go(-1)
+        this.$router.push("/custList")
       },
       addCustomer(){
-        
+        if(this.$route.name=="CustCreate"){
         this.customerObj.name=this.fname+" "+this.lname;
         this.customerObj.address=this.paddress+" "+this.pincode
         db.collection("customer").add(this.customerObj)
@@ -200,6 +236,20 @@ export default {
       })
         })
       this.$refs.form.reset()
+      }
+      else{
+        this.customerObj.name=this.fname+" "+this.lname;
+        this.customerObj.address=this.paddress+" "+this.pincode
+        db.collection("customer").doc(this.$route.params.id).update(this.customerObj).then(()=>{
+          console.log("Updated successfully")
+        })
+      }
+  },
+  deleteCustomer(){
+    db.collection("customer").doc(this.$route.params.id).delete().then(() => {
+    console.log("Document successfully deleted!");
+    this.$router.push("/custList")
+})
   }
   }
   

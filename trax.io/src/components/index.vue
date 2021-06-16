@@ -22,6 +22,7 @@
       >
         <template v-slot:activator="{ on, attrs }">
           <v-btn
+            height=50px
             color="primary"
             v-bind="attrs"
             v-on="on"
@@ -130,21 +131,6 @@ export default {
     waypoints:[],
       apikey: "UndrPfgxVRfeeL0lM6oEuHYJIdngdG7D9jYXLrKr7Q8",
        messages: [
-        // {
-        //   place: 'Delhi',
-        //   time: '10:42am',
-        //   color: 'deep-purple lighten-1',
-        // },
-        // {
-        //   place: 'Mumbai',
-        //   time: '2:37pm',
-        //   color: 'green',
-        // },
-        // {
-        //   place: 'Bangalore',
-        //   time: '5:47pm',
-        //   color: 'deep-purple lighten-1',
-        // },
       ],
       // platform: {},
       map: {}
@@ -162,6 +148,7 @@ export default {
 
     methods:{
       searchOrder(oid){
+        this.messages=[]
         let orderPromise=db.collection("order").where('id','==',oid).get().then((docs)=>{
           docs.forEach((doc)=>{
             this.ordID=oid
