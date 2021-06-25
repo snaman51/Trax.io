@@ -49,9 +49,24 @@
       class="ma-2"
       outlined
       color="white"
-      to="/sellerDetails"
+      to="/sellerCreate"
     >
       Add Seller
+    </v-btn>
+      
+    </v-toolbar>
+    <v-toolbar v-if="toggle==='courier'" style="flex: 0 0 auto;" dark class="primary">
+     
+      <v-toolbar-title >{{toggle}}</v-toolbar-title>
+
+      <v-spacer></v-spacer>
+      <v-btn
+      class="ma-2"
+      outlined
+      color="white"
+      to="/courierCreate"
+    >
+      Add Courier
     </v-btn>
       
     </v-toolbar>
