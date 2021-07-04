@@ -153,7 +153,7 @@ export default {
           else if(utype=="admin")
           this.$router.push("/custlist")
           else if(utype=="courier")
-          this.$router.push("/")
+          this.$router.push("/courierdashboard")
         }
         else{
           this.errors=[];

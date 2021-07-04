@@ -12,6 +12,9 @@ import Placeorder from './components/placeorder.vue';
 import Orderlist from './components/orderlist.vue';
 import SellerDetails from './components/sellerDetails.vue'
 import CourierDetails from './components/courierDetails.vue'
+import CourierDashboard from './components/courierdashboard.vue'
+
+
 
 Vue.use(VueRouter)
 
@@ -33,8 +36,7 @@ const router = new VueRouter({
     {path:'/custList',name:'CustList',component:CustList},
     { path: '/placeorder', name: 'placeorder', component: Placeorder},
     { path: '/orderlist', name: 'orderlist', component: Orderlist},
-    
-
+    {path: '/courierdashboard', name:'courierpage', component: CourierDashboard},
   ]
 })
 

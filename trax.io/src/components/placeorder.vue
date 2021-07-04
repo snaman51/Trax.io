@@ -166,8 +166,6 @@ export default {
         this.$router.go(-1)
       },
       addOrder(){
-        
-
         var Docref=db.collection("order").doc()
         Docref.set({
           date:Date.now(),
@@ -177,8 +175,6 @@ export default {
           price:this.price,
           switch1:this.switch1,
           id: Docref.id
-
-
         })
         .then(() => {
         console.log("Document written with ID: ");
