@@ -81,14 +81,11 @@
 
       <p>Smart Contract</p>
     <v-switch
-      v-model="switch1"
-      :label="`${switch1 ? 'Yes' : 'No'}`"
+    v-model="switch1"
+      :label="`${switch1 ? 'Yes' : 'No'}`" 
     ></v-switch>
     </v-col>
     </v-row>
-
-    
-  
   </v-card-text>
                               <v-divider></v-divider>
             <div class="text-center pa-3">
@@ -152,13 +149,160 @@ export default {
       price:'',
       switch1: null
       },
+      phoneno:"9663742451",
       valid:true,
   }),
+  mounted(){
+  this.load();
+  },
   methods: {
-      change(){
-      this.switch1=!this.switch1;
-      console.log(this.switch1);
+    async load(){
+      await this.loadWeb3();
+    window.contract = await this.loadContract();
     },
+    async loadWeb3() {
+    if (window.ethereum) {
+        window.web3 = new window.Web3("ws://localhost:7545");
+        window.ethereum.enable();
+    }
+},
+
+async loadContract() {
+    return await new window.web3.eth.Contract(
+        [
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "id",
+				"type": "string"
+			},
+			{
+				"name": "value",
+				"type": "uint256"
+			}
+		],
+		"name": "pay",
+		"outputs": [],
+		"payable": true,
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_addr",
+				"type": "address"
+			}
+		],
+		"name": "sendet",
+		"outputs": [],
+		"payable": true,
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [],
+		"name": "withdraw",
+		"outputs": [],
+		"payable": true,
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"payable": true,
+		"stateMutability": "payable",
+		"type": "fallback"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"name": "",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"name": "",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "Pay",
+		"type": "event"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "buyer",
+				"type": "address"
+			},
+			{
+				"name": "index",
+				"type": "uint256"
+			}
+		],
+		"name": "paymentOfAt",
+		"outputs": [
+			{
+				"name": "",
+				"type": "string"
+			},
+			{
+				"name": "amount",
+				"type": "uint256"
+			},
+			{
+				"name": "date",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "buyer",
+				"type": "address"
+			}
+		],
+		"name": "paymentsOf",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	}
+], '0xF9e8F063B041135D2f4fCaacE247FE118F05dF4c');
+},
+async smartc(){
+  console.log("in");
+  const account = "0xD2Ef36EC8088E22e3a13Afb1f3E387A51D678988";
+  console.log(account)
+  
+window.contract.methods.sendet("0x0ceD0792207F2655b2D5a6B5269a2acE512785C3").send({ from: account,value:window.web3.utils.toWei("1", "ether")});
+},
       reset(){
           this.$refs.form.reset()
       },
@@ -166,6 +310,29 @@ export default {
         this.$router.go(-1)
       },
       addOrder(){
+
+        var sellerEth,customerEth=null
+
+        var sellerPromise=db.collection("seller").doc(this.$route.params.id).get().then((docs)=>
+        {
+          console.log(docs.data().eid)
+            sellerEth=docs.data().eid
+        })
+
+        var customerPromise=db.collection("customer").where("phoneno","==",this.phoneno).get().then((docs)=>
+        {
+          docs.forEach((doc)=>{
+            console.log(doc.data().eid)
+            customerEth=doc.data().eid
+          })
+            
+        })
+
+        Promise.all([sellerPromise,customerPromise]).then(()=>{
+          console.log(sellerEth,customerEth)
+        })
+
+
         var Docref=db.collection("order").doc()
         Docref.set({
           date:Date.now(),
@@ -174,20 +341,19 @@ export default {
           pname:this.pname,
           price:this.price,
           switch1:this.switch1,
-          id: Docref.id
+          id: Docref.id,
         })
         .then(() => {
         console.log("Document written with ID: ");
+
  })
+
+if(this.switch1){
+    this.smartc();
+    }
       this.$refs.form.reset()
   },
   },
   
 }
 </script>
-var newDocRef = db.collection('collectionname').doc();
-newDocRef.set({
-                 name:'Jhon Doe',
-                 job:'Programmer',
-                 id: newDocRef.id
-          })

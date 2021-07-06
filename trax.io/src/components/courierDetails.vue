@@ -61,6 +61,7 @@
                               v-model="CourierObj.uname">
                     </v-text-field>
                 </v-col>
+                <div id="map"></div>
                 <v-col
                 cols="12"
                 sm="6">
@@ -166,6 +167,7 @@ export default {
       address:''
       },
       valid:true,
+      apikey: "UndrPfgxVRfeeL0lM6oEuHYJIdngdG7D9jYXLrKr7Q8",
       emailRules: [
         v => !!v || 'E-mail is required',
         v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
@@ -175,7 +177,37 @@ export default {
         v => (v && v.length == 10) || 'Enter valid phone number',
       ],
   }),
+  async mounted(){
+    var platform = new window.H.service.Platform({
+      apikey: this.apikey
+    });
+    var defaultLayers = platform.createDefaultLayers();
+
+    //Step 2: initialize a map
+    var map = new window.H.Map(document.getElementById('map'),
+      defaultLayers.vector.normal.map,{
+      center: {lat: 30.94625288456589, lng: -54.10861860580418},
+      zoom: 1,
+      pixelRatio: window.devicePixelRatio || 1
+    });
+    // add a resize listener to make sure that the map occupies the whole container
+    window.addEventListener('resize', () => map.getViewPort().resize());
+
+    //Step 3: make the map interactive
+    // MapEvents enables the event system
+    // Behavior implements default interactions for pan/zoom (also on mobile touch environments)
+    var behavior = new window.H.mapevents.Behavior(new window.H.mapevents.MapEvents(map));
+    console.log(behavior)
+    this.setUpClickListener(map);
+  },
   methods: {
+    setUpClickListener(map){
+       map.addEventListener('tap', function (evt) {
+    var coord = map.screenToGeo(evt.currentPointer.viewportX,
+            evt.currentPointer.viewportY);
+            console.log(coord)
+              });
+    },
       reset(){
           this.$refs.form.reset()
       },
