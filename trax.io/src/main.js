@@ -12,6 +12,7 @@ import Placeorder from './components/placeorder.vue';
 import Orderlist from './components/orderlist.vue';
 import SellerDetails from './components/sellerDetails.vue'
 import CourierDetails from './components/courierDetails.vue'
+import gmap from './components/map.vue'
 
 Vue.use(VueRouter)
 
@@ -22,6 +23,7 @@ const router = new VueRouter({
   routes: [
   { path: '/', name: 'index', component: Index },
     { path: '/login', name: 'login', component: Login },
+    { path: '/map', name: 'gmap', component: gmap },
     {path: '/customer/:orderid',name: 'customer', component: Customer, params:true},
     { path: '/customerDashboard', name: 'customerDashboard', component: CustomerDashboard },
     {path:'/custDetails/:id',name:'CustDetails',component:CustDetails},
