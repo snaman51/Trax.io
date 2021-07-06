@@ -310,6 +310,7 @@ window.contract.methods.sendet("0x0ceD0792207F2655b2D5a6B5269a2acE512785C3").sen
         this.$router.go(-1)
       },
       addOrder(){
+
         var sellerEth,customerEth=null
 
         var sellerPromise=db.collection("seller").doc(this.$route.params.id).get().then((docs)=>
@@ -332,8 +333,6 @@ window.contract.methods.sendet("0x0ceD0792207F2655b2D5a6B5269a2acE512785C3").sen
         })
 
 
-        
-// --------------------------------------------------------------------------
         var Docref=db.collection("order").doc()
         Docref.set({
           date:Date.now(),
@@ -348,7 +347,7 @@ window.contract.methods.sendet("0x0ceD0792207F2655b2D5a6B5269a2acE512785C3").sen
         console.log("Document written with ID: ");
 
  })
-// ----------------------------------------------------------------------------
+
 if(this.switch1){
     this.smartc();
     }

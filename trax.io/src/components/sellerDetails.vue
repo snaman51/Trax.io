@@ -233,7 +233,6 @@ emailjs.send("service_x9gq28i","template_pegalqg",
         console.log('FAILED...', err);
       })
       })
-      this.$refs.form.reset()
         }
         else{
         this.sellerObj.name=this.fname+" "+this.lname;
@@ -242,6 +241,7 @@ emailjs.send("service_x9gq28i","template_pegalqg",
           console.log("Updated successfully")
         })
         }
+        this.$refs.form.reset()
   },
     deleteSeller(){
     db.collection("seller").doc(this.$route.params.id).delete().then(() => {

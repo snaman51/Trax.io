@@ -12,6 +12,7 @@ import Placeorder from './components/placeorder.vue';
 import Orderlist from './components/orderlist.vue';
 import SellerDetails from './components/sellerDetails.vue'
 import CourierDetails from './components/courierDetails.vue'
+import CourierDashboard from './components/courierdashboard.vue'
 import hmap from './components/hmap.vue'
 
 Vue.use(VueRouter)
@@ -32,11 +33,12 @@ const router = new VueRouter({
     {path:'/courierDetails/:id',name:'CourierDetails',component:CourierDetails},
     {path:'/courierCreate',name:'CourierCreate',component:CourierDetails},
     {path:'/custList',name:'CustList',component:CustList},
+
+    {path: '/courierdashboard', name:'courierpage', component: CourierDashboard},
     { path: '/placeorder/:id', name: 'placeorder', component: Placeorder},
     { path: '/orderlist/:id', name: 'orderlist', component: Orderlist},
     { path: '/hmap', name: 'hmap', component: hmap},
     
-
   ]
 })
 
