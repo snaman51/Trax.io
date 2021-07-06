@@ -149,11 +149,11 @@ export default {
           if(utype=="customer")
           this.$router.push("/customerDashboard")
           else if(utype=="seller")
-          this.$router.push("/orderlist")
+          this.$router.push({ path: `/orderlist/${doc.id}` })
           else if(utype=="admin")
           this.$router.push("/custlist")
           else if(utype=="courier")
-          this.$router.push("/")
+          this.$router.push("/courierdashboard")
         }
         else{
           this.errors=[];

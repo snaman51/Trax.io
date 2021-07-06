@@ -48,6 +48,7 @@
                       v-model="lname"
                     >
                     </v-text-field>
+
                   </v-col>
                 </v-row>
                 <v-row>
@@ -106,6 +107,7 @@
                 ><v-divider></v-divider>
                 <div class="text-center pa-3">
                   <v-btn
+
                     class="ma-2"
                     color="primary"
                     dark
@@ -163,6 +165,7 @@ export default {
       (v) => !!v || "Name is required",
       (v) => (v && v.length == 10) || "Enter valid phone number",
     ],
+
   }),
   methods: {
     reset() {
