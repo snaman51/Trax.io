@@ -21,42 +21,42 @@ export default {
   props: {
     useBackCamera: {
       type: Boolean,
-      default: true
+      default: true,
     },
     stopOnScanned: {
       type: Boolean,
-      default: true
+      default: true,
     },
     drawOnFound: {
       type: Boolean,
-      default: true
+      default: true,
     },
     lineColor: {
       type: String,
-      default: "#FF3B58"
+      default: "#FF3B58",
     },
     lineWidth: {
       type: Number,
-      default: 2
+      default: 2,
     },
     videoWidth: {
       type: Number,
-      default: 320
+      default: 500,
     },
     videoHeight: {
       type: Number,
-      default: 240
+      default: 450,
     },
     responsive: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
     return {
       showPlay: false,
       containerWidth: null,
-      active: false
+      active: false,
     };
   },
   computed: {
@@ -67,7 +67,7 @@ export default {
         return { width, height };
       }
       return { width: this.videoWidth, height: this.videoHeight };
-    }
+    },
   },
   methods: {
     drawLine(begin, end) {
@@ -134,7 +134,7 @@ export default {
         const facingMode = this.useBackCamera
           ? { exact: "environment" }
           : "user";
-        const handleSuccess = stream => {
+        const handleSuccess = (stream) => {
           if (this.$refs.video.srcObject !== undefined) {
             this.$refs.video.srcObject = stream;
           } else if (this.$refs.video.mozSrcObject !== undefined) {
@@ -159,7 +159,7 @@ export default {
             navigator.mediaDevices
               .getUserMedia({ video: true })
               .then(handleSuccess)
-              .catch(error => {
+              .catch((error) => {
                 this.$emit("error-captured", error);
               });
           });
@@ -184,9 +184,9 @@ export default {
     },
     fullStop() {
       if (this.$refs.video && this.$refs.video.srcObject) {
-        this.$refs.video.srcObject.getTracks().forEach(t => t.stop());
+        this.$refs.video.srcObject.getTracks().forEach((t) => t.stop());
       }
-    }
+    },
   },
   mounted() {
     this.setup();
@@ -201,9 +201,9 @@ export default {
         if (!active) {
           this.fullStop();
         }
-      }
-    }
-  }
+      },
+    },
+  },
 };
 </script>
 
