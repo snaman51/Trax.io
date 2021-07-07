@@ -31,17 +31,19 @@ const router = new VueRouter({
     { path: '/map', name: 'gmap', component: gmap },
     { path: '/customer/:orderid', name: 'customer', component: Customer, params: true },
     { path: '/customerDashboard', name: 'customerDashboard', component: CustomerDashboard },
-    { path: '/custDetails/:id', name: 'CustDetails', component: CustDetails },
-    { path: '/custCreate', name: 'CustCreate', component: CustDetails },
-    { path: '/sellerDetails/:id', name: 'SellerDetails', component: SellerDetails },
-    { path: '/sellerCreate', name: 'SellerCreate', component: SellerDetails },
-    { path: '/courierDetails/:id', name: 'CourierDetails', component: CourierDetails },
-    { path: '/courierCreate', name: 'CourierCreate', component: CourierDetails },
-    { path: '/custList', name: 'CustList', component: CustList },
 
-    { path: '/courierdashboard', name: 'courierpage', component: CourierDashboard },
-    { path: '/placeorder/:id', name: 'placeorder', component: Placeorder },
-    { path: '/orderlist/:id', name: 'orderlist', component: Orderlist },
+    {path:'/custDetails/:id',name:'CustDetails',component:CustDetails},
+    {path:'/custCreate',name:'CustCreate',component:CustDetails},
+    {path:'/sellerDetails/:id',name:'SellerDetails',component:SellerDetails},
+    {path:'/sellerCreate',name:'SellerCreate',component:SellerDetails},
+    {path:'/courierDetails/:id',name:'CourierDetails',component:CourierDetails},
+    {path:'/courierCreate',name:'CourierCreate',component:CourierDetails},
+    {path:'/custList',name:'CustList',component:CustList},
+
+    {path: '/courierdashboard', name:'courierpage', component: CourierDashboard},
+    { path: '/placeorder/:id', name: 'placeorder', component: Placeorder},
+    { path: '/orderlist/:id', name: 'orderlist', component: Orderlist},
+
   ]
 })
 
