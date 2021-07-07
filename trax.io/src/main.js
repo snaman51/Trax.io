@@ -42,7 +42,6 @@ const router = new VueRouter({
     {path: '/courierdashboard', name:'courierpage', component: CourierDashboard},
     { path: '/placeorder/:id', name: 'placeorder', component: Placeorder},
     { path: '/orderlist/:id', name: 'orderlist', component: Orderlist},
-    { path: '/hmap', name: 'hmap', component: hmap},
     
   ]
 })
