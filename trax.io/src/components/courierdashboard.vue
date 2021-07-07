@@ -42,19 +42,19 @@
               style="margin: 20px 0px 0px 15px"
             >
               <v-img
-                height="272"
+                height="285"
                 src="https://image.freepik.com/free-vector/warehouse-storage-shipping-logistics-vector-concept-storage-transportation-cargo-delivery-shipping-illustration_53562-4658.jpg"
               ></v-img>
 
               <v-card-title>Welcome To Trax.io</v-card-title>
 
               <v-card-text>
-                <div class="my-4 text-subtitle-3">
+                <div class="my-3 text-subtitle-3">
                   Kindly update your warehouse Location
                 </div>
               </v-card-text>
               <v-card-text>
-                <div class="mt-4 text-subtitle-3">Click below !!!</div>
+                <div class="mt-3 text-subtitle-3">Click below !!!</div>
               </v-card-text>
               <v-card-actions>
                 <v-btn rounded color="primary" dark> Warehouse Location </v-btn>
