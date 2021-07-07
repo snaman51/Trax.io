@@ -1,15 +1,16 @@
 <template>
 <v-app id="bg">
+  <v-img src="https://cdn.dribbble.com/users/572151/screenshots/4459638/for-dribbble.gif">
 <v-container>
 <v-card
-    class="mx-auto my-12"
+    class="mx-auto my-15"
     max-width="500"
     >
      
   <v-form
   class="pa-9"
     ref="form"
-    v-model="valid"
+    v-model="valid" 
     lazy-validation
   >
       <v-row 
@@ -18,13 +19,13 @@
         >
         <v-chip-group
         v-model="utype"
-        active-class="deep-purple--text text--accent-4"
+        active-class="white"
         mandatory
       >
-        <v-chip value="seller">Seller</v-chip>
-        <v-chip value="customer">Customer</v-chip>
-        <v-chip value="courier">Courier</v-chip>
-        <v-chip value="admin">Admin</v-chip>
+        <v-chip color="primary" value="seller">Seller</v-chip>
+        <v-chip color="primary" value="customer">Customer</v-chip>
+        <v-chip color="primary" value="courier">Courier</v-chip>
+        <v-chip color="primary" value="admin">Admin</v-chip>
       </v-chip-group>
 
       </v-row>
@@ -77,35 +78,43 @@
   </v-form>
   </v-card>
   </v-container>
+  </v-img>
   </v-app>
 </template>
 
 <style>
-#togbutton{
+#togbutton {
   font-size: 8px;
 }
-p{
+p {
   margin-top: 10px;
   margin-right: 5px;
 }
-h3{
+h3 {
   margin-top: 20px;
   margin-bottom: 10px;
   margin-right: 10px;
   margin-left: 10px;
 }
-#button{
-margin-left: 200px;
-text-align: center;
-font-size: 14px;
+#button {
+  margin-left: 200px;
+  text-align: center;
+  font-size: 14px;
 }
-ul{
+ul {
   list-style-type: none;
 }
 
-#bg{
-background-image: linear-gradient(to left top, #1fccd7, #58d9db, #7be6e1, #9af2e8, #b6fff0);  }
-
+#bg {
+  background-image: linear-gradient(
+    to left top,
+    #1fccd7,
+    #58d9db,
+    #7be6e1,
+    #9af2e8,
+    #b6fff0
+  );
+}
 </style>
 
 
@@ -115,56 +124,57 @@ export default {
   name: "Login",
 
   data: () => ({
-  valid: true,
-      utype:"",
-      uname: '',
-      password: '',
-      errors:[],
-      emailRules: [
-        v => !!v || 'E-mail is required',
-        v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
-      ],
-      passRules: [
-        v => !!v || 'Password is required',
-        v => v.length >= 8  || 'Password must be more than 8 characters',
-      ],
-      value: String,
-      toggle_exclusive: undefined,
-    }),
+    valid: true,
+    utype: "",
+    uname: "",
+    password: "",
+    errors: [],
+    emailRules: [
+      (v) => !!v || "E-mail is required",
+      (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
+    ],
+    passRules: [
+      (v) => !!v || "Password is required",
+      (v) => v.length >= 8 || "Password must be more than 8 characters",
+    ],
+    value: String,
+    toggle_exclusive: undefined,
+  }),
 
-    methods: {
-      validate () {
-        this.$refs.form.validate()
-      },
+  methods: {
+    validate() {
+      this.$refs.form.validate();
+    },
 
-       openplaceorder(uname,password,utype) { 
-         if(utype) {
-         console.log("utype",utype)
+    openplaceorder(uname, password, utype) {
+      if (utype) {
+        console.log("utype", utype);
 
-        db.collection(utype).get().then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          console.log(doc.data().uname)
-          console.log(doc.data().password)
-        if(uname == doc.data().uname && password == doc.data().password ){
-          if(utype=="customer")
-          this.$router.push("/customerDashboard")
-          else if(utype=="seller")
-          this.$router.push({ path: `/orderlist/${doc.id}` })
-          else if(utype=="admin")
-          this.$router.push("/custlist")
-          else if(utype=="courier")
-          this.$router.push("/courierdashboard")
-        }
-        else{
-          this.errors=[];
-          this.errors.push('Invalid Username or password')
-        }
-        
-    });
-});
-       }
+        db.collection(utype)
+          .get()
+          .then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+              console.log(doc.data().uname);
+              console.log(doc.data().password);
+              if (
+                uname == doc.data().uname &&
+                password == doc.data().password
+              ) {
+                if (utype == "customer")
+                  this.$router.push("/customerDashboard");
+                else if (utype == "seller")
+                  this.$router.push({ path: `/orderlist/${doc.id}` });
+                else if (utype == "admin") this.$router.push("/custlist");
+                else if (utype == "courier")
+                  this.$router.push("/courierdashboard");
+              } else {
+                this.errors = [];
+                this.errors.push("Invalid Username or password");
+              }
+            });
+          });
       }
     },
-    
+  },
 };
 </script>
