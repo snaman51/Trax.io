@@ -60,6 +60,6 @@ export default {
 </script>
 <style scoped>
 #Mymap {
-  height: 600px;
+  height: 500px;
 }
 </style>
