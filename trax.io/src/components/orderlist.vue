@@ -10,7 +10,7 @@
       class="ma-2"
       outlined
       color="white"
-      to="/placeorder"
+      v-on:click="placeOrder"
     >
       Add Order
     </v-btn>
@@ -101,6 +101,10 @@ export default {
     }
   },
   methods: {
+    placeOrder(){
+      console.log(this.$route.params.id)
+      this.$router.push("/placeorder/"+this.$route.params.id)
+    }
   }
 }
 </script>

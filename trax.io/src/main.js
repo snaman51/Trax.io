@@ -12,8 +12,11 @@ import Placeorder from './components/placeorder.vue';
 import Orderlist from './components/orderlist.vue';
 import SellerDetails from './components/sellerDetails.vue'
 import CourierDetails from './components/courierDetails.vue'
+
 import CourierDashboard from './components/courierdashboard.vue'
 
+
+import gmap from './components/map.vue'
 
 
 Vue.use(VueRouter)
@@ -23,10 +26,12 @@ const router = new VueRouter({
   // mode: 'history',
   // base: __dirname,
   routes: [
-  { path: '/', name: 'index', component: Index },
+    { path: '/', name: 'index', component: Index },
     { path: '/login', name: 'login', component: Login },
-    {path: '/customer/:orderid',name: 'customer', component: Customer, params:true},
+    { path: '/map', name: 'gmap', component: gmap },
+    { path: '/customer/:orderid', name: 'customer', component: Customer, params: true },
     { path: '/customerDashboard', name: 'customerDashboard', component: CustomerDashboard },
+
     {path:'/custDetails/:id',name:'CustDetails',component:CustDetails},
     {path:'/custCreate',name:'CustCreate',component:CustDetails},
     {path:'/sellerDetails/:id',name:'SellerDetails',component:SellerDetails},
@@ -34,9 +39,11 @@ const router = new VueRouter({
     {path:'/courierDetails/:id',name:'CourierDetails',component:CourierDetails},
     {path:'/courierCreate',name:'CourierCreate',component:CourierDetails},
     {path:'/custList',name:'CustList',component:CustList},
-    { path: '/placeorder', name: 'placeorder', component: Placeorder},
-    { path: '/orderlist', name: 'orderlist', component: Orderlist},
+
     {path: '/courierdashboard', name:'courierpage', component: CourierDashboard},
+    { path: '/placeorder/:id', name: 'placeorder', component: Placeorder},
+    { path: '/orderlist/:id', name: 'orderlist', component: Orderlist},
+
   ]
 })
 
