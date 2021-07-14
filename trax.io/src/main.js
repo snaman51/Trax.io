@@ -12,11 +12,9 @@ import Placeorder from './components/placeorder.vue';
 import Orderlist from './components/orderlist.vue';
 import SellerDetails from './components/sellerDetails.vue'
 import CourierDetails from './components/courierDetails.vue'
-
 import CourierDashboard from './components/courierdashboard.vue'
-
-
 import gmap from './components/map.vue'
+import BatchOrders from './components/batchOrders.vue'
 
 
 Vue.use(VueRouter)
@@ -31,18 +29,18 @@ const router = new VueRouter({
     { path: '/map', name: 'gmap', component: gmap },
     { path: '/customer/:orderid', name: 'customer', component: Customer, params: true },
     { path: '/customerDashboard', name: 'customerDashboard', component: CustomerDashboard },
-
-    {path:'/custDetails/:id',name:'CustDetails',component:CustDetails},
-    {path:'/custCreate',name:'CustCreate',component:CustDetails},
-    {path:'/sellerDetails/:id',name:'SellerDetails',component:SellerDetails},
-    {path:'/sellerCreate',name:'SellerCreate',component:SellerDetails},
-    {path:'/courierDetails/:id',name:'CourierDetails',component:CourierDetails},
-    {path:'/courierCreate',name:'CourierCreate',component:CourierDetails},
-    {path:'/custList',name:'CustList',component:CustList},
-
-    {path: '/courierdashboard', name:'courierpage', component: CourierDashboard},
-    { path: '/placeorder/:id', name: 'placeorder', component: Placeorder},
-    { path: '/orderlist/:id', name: 'orderlist', component: Orderlist},
+    { path: '/custDetails/:id', name: 'CustDetails', component: CustDetails },
+    { path: '/custCreate', name: 'CustCreate', component: CustDetails },
+    { path: '/sellerDetails/:id', name: 'SellerDetails', component: SellerDetails },
+    { path: '/sellerCreate', name: 'SellerCreate', component: SellerDetails },
+    { path: '/courierDetails/:id', name: 'CourierDetails', component: CourierDetails },
+    { path: '/courierCreate', name: 'CourierCreate', component: CourierDetails },
+    { path: '/custList', name: 'CustList', component: CustList },
+    { path: '/courierdashboard/:id/courierUpdate', name: 'courierUpdate', component: CourierDetails, params: true },
+    { path: '/courierdashboard/:id', name: 'courierpage', component: CourierDashboard },
+    { path: '/placeorder/:id', name: 'placeorder', component: Placeorder },
+    { path: '/orderlist/:id', name: 'orderlist', component: Orderlist },
+    { path: '/batchorders', name: 'BatchOrders', component: BatchOrders },
 
   ]
 })

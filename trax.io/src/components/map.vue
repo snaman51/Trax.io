@@ -1,18 +1,23 @@
 <template>
   <div>
     <h1>Kindly pin point your position or near by position</h1>
-    <div id="Mymap" ref="Mymap"></div>
+    <div id="Mymap" ref="Mymap" @click="passEvent"></div>
   </div>
 </template>
 <script>
 export default {
   name: "gmap",
+  props: {},
+
   data: () => ({
     map: null,
-    myLatlng: {},
+    myLatlng: {
+      lat: 13.0518166,
+      lng: 77.607755,
+    },
   }),
   mounted() {
-    this.myLatlng = { lat: 13.0518166, lng: 77.607755 };
+    // this.myLatlng = { lat: 13.0518166, lng: 77.607755 };
 
     this.map = new window.google.maps.Map(this.$refs["Mymap"], {
       zoom: 15,
@@ -53,8 +58,17 @@ export default {
         JSON.stringify(mapsMouseEvent.latLng.toJSON(), null, 2)
       );
       infoWindow.open(this.map);
-      console.log(JSON.stringify(mapsMouseEvent.latLng.toJSON(), null, 2));
+      // console.log(JSON.stringify(mapsMouseEvent.latLng.toJSON(), null, 2));
+
+      this.myLatlng = mapsMouseEvent.latLng.toJSON();
+      console.log(this.myLatlng.lat);
+      this.$emit("changeLatLng", this.myLatlng);
     });
+  },
+  method: {
+    passEvent() {
+      this.$emit("changeLatLng", this.myLatlng);
+    },
   },
 };
 </script>
