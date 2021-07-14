@@ -58,9 +58,9 @@
     ></v-text-field>
     </v-card-text>
 
-   <p v-if="errors.length">
-    <ul>
-      <li v-for="error in errors" v-bind:key="error">{{ error }}</li>
+   <p v-if="errors.length" >
+    <ul >
+      <li  v-for="error in errors" v-bind:key="error">{{ error }}</li>
     </ul>
   </p>
 
@@ -166,7 +166,7 @@ export default {
                   this.$router.push({ path: `/orderlist/${doc.id}` });
                 else if (utype == "admin") this.$router.push("/custlist");
                 else if (utype == "courier")
-                  this.$router.push("/courierdashboard");
+                  this.$router.push({ path: `/courierdashboard/${doc.id}` });
               } else {
                 this.errors = [];
                 this.errors.push("Invalid Username or password");

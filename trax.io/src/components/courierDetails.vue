@@ -77,8 +77,9 @@
                       ></v-text-field>
                     </v-col>
                   </v-row>
-                  <v-row>
-                    <gmap></gmap>
+                  <!-- v-if="flag== 'True'" -->
+                  <v-row v-if="flag == 'True'">
+                    <gmap @changeLatLng="ChangeT($event)"></gmap>
                     <!-- <div>
                     <h1>Kindly pin point your position or near by position</h1>
                     <div id="Mymap" ref="Mymap"></div>
@@ -102,7 +103,7 @@
                         :rules="[(v) => !!v || 'PinCode is required']"
                         label="PinCode"
                         type="text"
-                        v-model="pincode"
+                        v-model="CourierObj.pincode"
                       ></v-text-field
                     ></v-col> </v-row
                   ><v-divider></v-divider>
@@ -154,16 +155,25 @@ export default {
   components: {
     gmap,
   },
+
   data: () => ({
+    flag: "False",
     fname: "",
     lname: "",
-    // map: null,
-    pincode: "",
+    map: null,
+    myLatLng: {
+      lat: null,
+      lng: null,
+    },
+
     CourierObj: {
       name: "",
       uname: "",
       password: "",
       phoneno: "",
+      pincode: "",
+      latitude: null,
+      longitude: null,
     },
     valid: true,
     apikey: "UndrPfgxVRfeeL0lM6oEuHYJIdngdG7D9jYXLrKr7Q8",
@@ -176,7 +186,26 @@ export default {
       (v) => (v && v.length == 10) || "Enter valid phone number",
     ],
   }),
+  created() {
+    if (this.$route.name == "courierUpdate") {
+      db.collection("courier")
+        .doc(this.$route.params.id)
+        .get()
+        .then((docs) => {
+          this.CourierObj = docs.data();
+          var a = this.CourierObj.name.split(" ");
+          this.fname = a[0];
+          delete a[0];
+          this.lname = a.join(" ");
+        });
+      console.log(this.$route.params.id);
+      this.flag = "True";
+    }
+  },
   methods: {
+    ChangeT(myLatlng) {
+      this.myLatLng = myLatlng;
+    },
     reset() {
       this.$refs.form.reset();
     },
@@ -184,28 +213,44 @@ export default {
       this.$router.go(-1);
     },
     addCourier() {
-      this.CourierObj.name = this.fname + " " + this.lname;
+      if (this.$route.name == "CourierCreate") {
+        this.CourierObj.name = this.fname + " " + this.lname;
 
-      db.collection("Courier")
-        .add(this.CourierObj)
-        .then((docRef) => {
-          console.log("Document written with ID: ", docRef.id);
-          emailjs
-            .send("service_x9gq28i", "template_pegalqg", {
-              name: this.CourierObj.name,
-              uname: this.CourierObj.uname,
-              password: this.CourierObj.password,
-            })
-            .then(
-              function (response) {
-                console.log("SUCCESS!", response.status, response.text);
-              },
-              function (err) {
-                console.log("FAILED...", err);
-              }
-            );
-        });
-      this.$refs.form.reset();
+        db.collection("courier")
+          .add(this.CourierObj)
+          .then((docRef) => {
+            console.log("Document written with ID: ", docRef.id);
+            emailjs
+              .send("service_x9gq28i", "template_pegalqg", {
+                name: this.CourierObj.name,
+                uname: this.CourierObj.uname,
+                password: this.CourierObj.password,
+              })
+              .then(
+                function (response) {
+                  console.log("SUCCESS!", response.status, response.text);
+                },
+                function (err) {
+                  console.log("FAILED...", err);
+                }
+              );
+          });
+        this.$refs.form.reset();
+      } else {
+        this.CourierObj.name = this.fname + " " + this.lname;
+        this.CourierObj.latitude = this.myLatLng.lat;
+        this.CourierObj.longitude = this.myLatLng.lng;
+        console.log("++++++++++++++", this.myLatLng);
+        console.log(this.CourierObj.longitude);
+
+        db.collection("courier")
+          .doc(this.$route.params.id)
+          .update(this.CourierObj)
+          .then(() => {
+            console.log("Updated successfully");
+          });
+        this.$refs.form.reset();
+      }
     },
   },
 };

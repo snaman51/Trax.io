@@ -57,7 +57,12 @@
                 <div class="mt-3 text-subtitle-3">Click below !!!</div>
               </v-card-text>
               <v-card-actions>
-                <v-btn rounded color="primary" dark> Warehouse Location </v-btn>
+                <v-btn rounded color="primary" dark v-on:click="updateLocation">
+                  Warehouse Location
+                </v-btn>
+                <v-btn rounded color="primary" dark v-on:click="navBatch">
+                  Batch Orders
+                </v-btn>
               </v-card-actions>
             </v-card>
           </v-col>
@@ -93,6 +98,14 @@ export default {
     };
   },
   methods: {
+    updateLocation() {
+      this.$router.push({
+        path: `/courierdashboard/${this.$route.params.id}/courierUpdate`,
+      });
+    },
+    navBatch() {
+      this.$router.push("/batchorders");
+    },
     codeScanned(code) {
       this.scanned = code;
       console.log(this.scanned, Date.now(), this.longitude, this.latitude);
