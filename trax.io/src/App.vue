@@ -7,7 +7,7 @@
 
 <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
 
-      <v-toolbar-title>Trax.io</v-toolbar-title>
+      <v-toolbar-title id="traxio">Trax.io</v-toolbar-title>
 
       <v-spacer></v-spacer>
 
@@ -74,6 +74,10 @@
 
 
 <style>
+#traxio{
+  font-family: 'Zen Tokyo Zoo', cursive;
+  font-size: 45px;
+}
 #bg{
 background-image: linear-gradient(to left top, #1fccd7, #58d9db, #7be6e1, #9af2e8, #b6fff0);  }
 </style>

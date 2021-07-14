@@ -1,6 +1,5 @@
 
   <template>
-
   <v-app>
     <v-img
     src="https://images.pexels.com/photos/2226458/pexels-photo-2226458.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260" 
@@ -40,7 +39,7 @@
       Order No: {{ordID}}
     </v-card-title>
 
-    <v-card-actions>
+    <v-card-actions v-if="orderID != 'Order Not Found' ">
       <v-btn
         color="orange lighten-2"
         text
@@ -53,12 +52,14 @@
       <v-btn
         icon
         @click="show = !show"
+        
       >
         <v-icon>{{ show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
       </v-btn>
+
     </v-card-actions>
 
-    <v-expand-transition>
+    <v-expand-transition >
       <div v-show="show">
         <v-divider></v-divider> 
 
@@ -76,7 +77,7 @@
             >
               <div>
                 <div class="font-weight-normal">
-                  <strong>Arrived {{ message.place }}</strong>
+                  <strong>Arrived in {{ message.place }}</strong>
                 </div>
                 <div>@ {{ message.time }}</div>
               </div>
@@ -126,6 +127,7 @@ export default {
     show: false,
     platform: null,
     orderID:"",
+    stime:0,
     ordID:"",
     src:"",
     waypoints:[],
@@ -149,7 +151,8 @@ export default {
     methods:{
       searchOrder(oid){
         this.messages=[]
-        let orderPromise=db.collection("order").where('id','==',oid).get().then((docs)=>{
+
+let orderPromise=db.collection("order").where('id','==',oid).get().then((docs)=>{
           docs.forEach((doc)=>{
             this.ordID=oid
             console.log(doc.data())
@@ -158,8 +161,8 @@ export default {
         .catch(()=>{
             console.log("not found")
         })
-
-    let fetchSrc=db.collection("location").doc("device").collection("snaman").orderBy("time").limit(1).get().then((docs)=>{
+        
+    let fetchSrc= db.collection("location").doc("device").collection("snaman").orderBy("time").limit(1).get().then((docs)=>{
   docs.forEach((doc)=> {
   if(doc.exists){
     this.src=String(doc.data().latitude)+","+String(doc.data().longitude);
@@ -169,37 +172,45 @@ export default {
       at: this.src
     }, (result) => {
       result.items.forEach((item) => {
+        this.stime=doc.data().time
         var date = new Date(doc.data().time);
         var dateTime=date.getDate()+"/"+(date.getMonth()+1)+"/"+date.getFullYear()+" "+date.getHours()+":"+date.getMinutes()+":"+date.getSeconds()
+        this.messages=[]
         this.messages.push({"place":item.address.city,"time":dateTime})
+
       })
+      
     }
-      )
-  }
+      )}
+  
   })
+
 });
 
-let fetchWaypoints=db.collection("location").doc("device").collection("snaman").orderBy("time").get().then((docs)=>{
+
+let fetchWaypoints= db.collection("location").doc("device").collection("snaman").where('time','>',this.stime).orderBy("time").get().then((docs)=>{
     docs.forEach((doc)=>{
     if(doc.exists){
-      this.waypoints.push(String(doc.data().latitude)+","+String(doc.data().longitude));
+
+      this.waypoints.push(String(doc.data().latitude)+","+String(doc.data().longitude))
 var service = this.platform.getSearchService();
       service.reverseGeocode({
-      at: this.waypoints[0]
+      at: this.waypoints[this.waypoints.length-1]
     }, (result) => {
+      
       result.items.forEach((item) => {
-        console.log(item.address.city)
 
-        this.messages.forEach((i)=>{
-        if(i.place==item.address.city){
+        if(this.messages.map(function(o) { return o.place; }).indexOf(item.address.city)!=-1){
           var date = new Date(doc.data().time);
         var dateTime=date.getDate()+"/"+(date.getMonth()+1)+"/"+date.getFullYear()+" "+date.getHours()+":"+date.getMinutes()+":"+date.getSeconds()
-          i.time=dateTime
+          this.messages[this.messages.map(function(o) { return o.place; }).indexOf(item.address.city)].time=dateTime
         }
         else{
-          this.messages.push({'place':item.address.city,'time':doc.data().time})
+        let date = new Date(doc.data().time);
+        let dateTime=date.getDate()+"/"+(date.getMonth()+1)+"/"+date.getFullYear()+" "+date.getHours()+":"+date.getMinutes()+":"+date.getSeconds()
+          this.messages.push({'place':item.address.city,'time':dateTime})
         }
-      })
+
         
       })
 
@@ -208,16 +219,19 @@ var service = this.platform.getSearchService();
     }
     })
   });
-
-        Promise.all([orderPromise,fetchWaypoints,fetchSrc]).then(()=>{
-          console.log(oid)
+  
+this.messages=[]
+        Promise.all([orderPromise]).then(()=>{
+          Promise.all([fetchSrc]).then(()=>{
+            Promise.all([fetchWaypoints]).then(()=>{
         if(this.ordID==''){
           this.ordID="Order Not Found"
         }
-      console.log(this.ordID)
+            })
+          })
+
         });
 
-        
       }
     }
     

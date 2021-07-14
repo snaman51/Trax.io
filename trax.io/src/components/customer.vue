@@ -168,23 +168,26 @@ this.fetchWaypoints = function() {
     docs.forEach((doc)=>{
     if(doc.exists){
       this.waypoints.push(String(doc.data().latitude)+","+String(doc.data().longitude));
+
 var service = platform.getSearchService();
       service.reverseGeocode({
-      at: this.waypoints[0]
+      at: this.waypoints[this.waypoints.length-1]
     }, (result) => {
       result.items.forEach((item) => {
         console.log(item.address.city)
 
-        this.messages.forEach((i)=>{
-        if(i.place==item.address.city){
+        // this.messages.forEach((i)=>{
+        if(this.messages.indexOf(item.address.city)!=-1){
           var date = new Date(doc.data().time);
         var dateTime=date.getDate()+"/"+(date.getMonth()+1)+"/"+date.getFullYear()+" "+date.getHours()+":"+date.getMinutes()+":"+date.getSeconds()
-          i.time=dateTime
+          this.messages[this.messages.indexOf(item.address.city)].time=dateTime
         }
         else{
-          this.messages.push({'place':item.address.city,'time':doc.data().time})
+          let date = new Date(doc.data().time);
+        let dateTime=date.getDate()+"/"+(date.getMonth()+1)+"/"+date.getFullYear()+" "+date.getHours()+":"+date.getMinutes()+":"+date.getSeconds()
+          this.messages.push({'place':item.address.city,'time':dateTime})
         }
-      })
+      // })
         
       })
 
@@ -199,8 +202,8 @@ var service = platform.getSearchService();
 // console.log(this.dest)
 
 this.fetchSrc()
-.then(this.fetchDest.bind(this))
 .then(this.fetchWaypoints.bind(this))
+.then(this.fetchDest.bind(this))
 .then(() => {
   console.log(this.src, this.dest, this.waypoints);
 
@@ -216,6 +219,7 @@ this.fetchSrc()
   'return': 'polyline'
 };
 
+console.log(this.messages)
 // Define a callback function to process the routing response:
 var onResult = function(result) {
   // ensure that at least one route was found
